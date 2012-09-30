@@ -1,6 +1,8 @@
 from flask import Flask, render_template
+import os
 
 app = Flask(__name__)
+app.config['DEBUG'] = bool(os.environ.get('DEBUG'))
 
 
 @app.route("/")
@@ -29,5 +31,5 @@ def newuser():
 
 
 if __name__ == "__main__":
-    app.config['DEBUG'] = True
-    app.run('127.0.0.1', 8080)
+    port = int(os.environ.get("PORT", 5000))
+    app.run('0.0.0.0', port)
