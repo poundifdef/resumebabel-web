@@ -3,6 +3,7 @@ import os
 
 app = Flask(__name__)
 app.config['DEBUG'] = bool(os.environ.get('DEBUG'))
+app.config['SERVER_NAME'] = 'dev.resumebabel.com:5000'
 
 
 @app.route("/")
@@ -32,4 +33,4 @@ def newuser():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run('0.0.0.0', port)
+    app.run('0.0.0.0', port, use_reloader=True)
