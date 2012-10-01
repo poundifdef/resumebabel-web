@@ -3,7 +3,7 @@ import os
 
 app = Flask(__name__)
 app.config['DEBUG'] = bool(os.environ.get('DEBUG'))
-app.config['SERVER_NAME'] = 'dev.resumebabel.com:5000'
+# app.config['SERVER_NAME'] = 'dev.resumebabel.com:5000'
 
 
 @app.route("/")
