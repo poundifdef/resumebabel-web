@@ -25,7 +25,7 @@ def faq():
 
 @app.route('/login')
 def login():
-    return ""
+    return render_template('login.html')
 
 
 @app.route('/register')
