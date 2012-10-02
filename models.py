@@ -3,7 +3,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-class User(db.Model):  # TODO: UserMixin from flask auth extension 
+
+class User(db.Model):  # TODO: UserMixin from flask auth extension
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(128), unique=True, nullable=False)
     salt = db.Column(db.String(32), unique=False, nullable=False)
