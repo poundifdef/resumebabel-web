@@ -1,3 +1,6 @@
 git
 python-pip
 python-virtualenv
+nginx
+uwsgi
+uwsgi-plugin-python
