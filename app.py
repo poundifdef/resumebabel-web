@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import os
 
 app = Flask(__name__)
-app.config.from_object('website_settings.Config')
+app.config.from_object('config.Config')
 
 
 @app.route("/")
