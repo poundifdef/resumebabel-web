@@ -39,18 +39,15 @@ if __name__ == "__main__":
     ctx.push()
 
     # Create db tables
-    print db.create_all()
+    db.create_all()
 
-    # Create initial admin user
-    u = User('admin', 'gettingajob')
-    print db.session.add(u)
-    print db.session.commit()
-
-    print User.query.all()
+    # Create initial admin user if they don't already exist
+    if not User.query.filter_by(email='admin').first():
+        u = User('admin', 'gettingajob')
+        db.session.add(u)
+        db.session.commit()
 
     ctx.pop()
-
-    print app.__dict__
 
     # Start server
     port = int(os.environ.get("PORT", 5000))
