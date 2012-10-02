@@ -1,3 +1,3 @@
 class Config(object):
     DEBUG = True
-    DATABASE_URI = 'sqlite://:memory:'
+    SQLALCHEMY_DATABASE_URI = 'sqlite:////tmp/resumebabel.sqlite'
