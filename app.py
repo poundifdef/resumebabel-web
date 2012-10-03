@@ -1,5 +1,6 @@
 from bcrypt import hashpw
-from flask import flash, Flask, render_template, request, url_for
+from flask import flash, Flask, render_template as flask_render_template, \
+    request, url_for
 from flask.ext.login import current_user, login_required, login_user, \
     logout_user, LoginManager, redirect
 from models import db, User
@@ -13,6 +14,22 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.setup_app(app)
 login_manager.login_view = "login"
+
+
+def render_template(*args, **kwargs):
+    nav = [
+            ('/', 'Home'),
+            ('#', 'Samples'),
+            ('#', 'FAQ'),
+          ]
+
+    if current_user.is_authenticated():
+        nav.append((url_for('resumes'), 'My Resumes'))
+        nav.append((url_for('logout'), 'Logout'))
+    else:
+        nav.append((url_for('login'), 'Login'))
+
+    return flask_render_template(*args, nav=nav, **kwargs)
 
 
 @login_manager.user_loader
@@ -68,7 +85,7 @@ def logout():
 @app.route('/resumes')
 @login_required
 def resumes():
-    return "my resumes"
+    return render_template('resumes.html')
 
 
 @app.route('/register')
