@@ -22,5 +22,10 @@ class RegistrationForm(Form):
             raise ValidationError('Email address already taken')
 
     def validate_display_name(form, field):
+        # TODO: no whitespace
         if User.query.filter_by(display_name=field.data).first():
             raise ValidationError('Display name already taken')
+
+    def validate_password(form, field):
+        # TODO: min password requirements
+        pass
