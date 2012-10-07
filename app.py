@@ -1,10 +1,10 @@
 from bcrypt import hashpw
 from flask import (flash, Flask, render_template as flask_render_template,
-    request, url_for)
+                   url_for)
 from flask.ext.login import (current_user, login_required, login_user,
-    logout_user, LoginManager, redirect)
+                             logout_user, LoginManager, redirect)
 from models import db, User
-from forms import LoginForm
+from forms import LoginForm, RegistrationForm
 import os
 
 app = Flask(__name__)
@@ -20,10 +20,10 @@ login_manager.login_message = None
 
 def render_template(*args, **kwargs):
     nav = [
-            ('/', 'Home'),
-            ('#', 'Samples'),
-            ('#', 'FAQ'),
-          ]
+        ('/', 'Home'),
+        ('#', 'Samples'),
+        ('#', 'FAQ'),
+    ]
 
     if current_user.is_authenticated():
         nav.append((url_for('resumes'), 'My Resumes'))
@@ -57,7 +57,7 @@ def faq():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     def check_credential(user):
-        return user and hashpw(password, user.salt) == user.passwd
+        return user and hashpw(password, user.salt) == user.password
 
     if current_user.is_authenticated():
         return redirect(url_for("resumes"))
@@ -75,32 +75,7 @@ def login():
             flash('Invalid Login')
             return render_template('login.html', form=form)
 
-    #if current_user.is_anonymous():
-    #    form = LoginForm()
-    #    return render_template('login.html', form=form)
-
-    #return redirect(url_for("resumes"))
-    #    return redirect(url_for("resumes"))
-
     return render_template('login.html', form=form)
-
-    '''
-    if request.method == 'POST':
-        username = request.form.get('email', '')
-        password = request.form.get('password', '')
-
-        user = User.query.filter_by(email=username).first()
-        if check_credential(user):
-            login_user(user)
-        else:
-            flash('Invalid Login')
-
-    if current_user.is_anonymous():
-        form = LoginForm()
-        return render_template('login.html', form=form)
-
-    return redirect(url_for("resumes"))
-    '''
 
 
 @app.route("/logout")
@@ -116,9 +91,25 @@ def resumes():
     return render_template('resumes.html')
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return ""
+    if current_user.is_authenticated():
+        return redirect(url_for("resumes"))
+
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        display_name = form.display_name.data
+        password = form.password.data
+
+        u = User(email, display_name, password)
+        db.session.add(u)
+        db.session.commit()
+
+        login_user(u)
+        return redirect(url_for("resumes"))
+
+    return render_template('register.html', form=form)
 
 
 if __name__ == "__main__":
@@ -131,7 +122,7 @@ if __name__ == "__main__":
 
     # Create initial admin user if they don't already exist
     if not User.query.filter_by(email='admin').first():
-        u = User('admin', 'peach')
+        u = User('admin', 'admin', 'peach')
         u.admin = True
         db.session.add(u)
         db.session.commit()
