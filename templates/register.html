@@ -10,21 +10,26 @@
   {% endif %}
 {% endwith %}
 
-<h3>Please Sign in!</h3>
+<h3>Welcome! Register here.</h3>
 
-<form class="form-horizontal" method="post" action="/login">
+<form class="form-horizontal" method="post" action="/register">
 {% for field in form if field.widget.input_type != 'hidden' %}
+  {% if field.errors %}
+  <div class="control-group error">
+  {% else %}
   <div class="control-group">
+  {% endif %}
     {{ field.label(class="control-label") }}
     <div class="controls">
       {{ field }}
+  {% if field.errors %}
+  <span class="help-inline">{{field.errors[0]}}</span>
+  {% endif %}
     </div>
   </div>
 {% endfor %}
 
 {{ form.hidden_tag() }}
 </form>
-
-Not a member? <a href="/register">Register!</a>
 
 {% include 'footer.html' %}
