@@ -1,9 +1,10 @@
 from bcrypt import hashpw
-from flask import flash, Flask, render_template as flask_render_template, \
-    request, url_for
-from flask.ext.login import current_user, login_required, login_user, \
-    logout_user, LoginManager, redirect
+from flask import (flash, Flask, render_template as flask_render_template,
+    request, url_for)
+from flask.ext.login import (current_user, login_required, login_user,
+    logout_user, LoginManager, redirect)
 from models import db, User
+from forms import LoginForm
 import os
 
 app = Flask(__name__)
@@ -14,6 +15,7 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.setup_app(app)
 login_manager.login_view = "login"
+login_manager.login_message = None
 
 
 def render_template(*args, **kwargs):
@@ -57,6 +59,32 @@ def login():
     def check_credential(user):
         return user and hashpw(password, user.salt) == user.passwd
 
+    if current_user.is_authenticated():
+        return redirect(url_for("resumes"))
+
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        user = User.query.filter_by(email=email).first()
+
+        if check_credential(user):
+            login_user(user)
+            return redirect(url_for("resumes"))
+        else:
+            flash('Invalid Login')
+            return render_template('login.html', form=form)
+
+    #if current_user.is_anonymous():
+    #    form = LoginForm()
+    #    return render_template('login.html', form=form)
+
+    #return redirect(url_for("resumes"))
+    #    return redirect(url_for("resumes"))
+
+    return render_template('login.html', form=form)
+
+    '''
     if request.method == 'POST':
         username = request.form.get('email', '')
         password = request.form.get('password', '')
@@ -68,11 +96,11 @@ def login():
             flash('Invalid Login')
 
     if current_user.is_anonymous():
-        return render_template('login.html')
+        form = LoginForm()
+        return render_template('login.html', form=form)
 
     return redirect(url_for("resumes"))
-
-    return render_template('login.html')
+    '''
 
 
 @app.route("/logout")

@@ -1,5 +1,11 @@
 {% include 'header.html' %}
 
+<pre>
+{{ form.email.errors }}
+{{ form.password.errors }}
+</pre>
+
+
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     {% for message in messages %}
@@ -13,23 +19,16 @@
 <h3>Please Sign in!</h3>
 
 <form class="form-horizontal" method="post" action="/login">
+{% for field in form if field.widget.input_type != 'hidden' %}
   <div class="control-group">
-    <label class="control-label" for="inputEmail">Email</label>
+    {{ field.label(class="control-label") }}
     <div class="controls">
-      <input type="text" id="inputEmail" name="email" placeholder="Email">
+      {{ field }}
     </div>
   </div>
-  <div class="control-group">
-    <label class="control-label" for="inputPassword">Password</label>
-    <div class="controls">
-      <input type="password" id="inputPassword" name="password" placeholder="Password">
-    </div>
-  </div>
-  <div class="control-group">
-    <div class="controls">
-      <button type="submit" class="btn">Sign in</button>
-    </div>
-  </div>
+{% endfor %}
+
+{{ form.hidden_tag() }}
 </form>
 
 {% include 'footer.html' %}
