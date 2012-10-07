@@ -1,0 +1,35 @@
+{% include 'header.html' %}
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-error">
+      {{ message }}
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<h3>Welcome! Register here.</h3>
+
+<form class="form-horizontal" method="post" action="/register">
+{% for field in form if field.widget.input_type != 'hidden' %}
+  {% if field.errors %}
+  <div class="control-group error">
+  {% else %}
+  <div class="control-group">
+  {% endif %}
+    {{ field.label(class="control-label") }}
+    <div class="controls">
+      {{ field }}
+  {% if field.errors %}
+  <span class="help-inline">{{field.errors[0]}}</span>
+  {% endif %}
+    </div>
+  </div>
+{% endfor %}
+
+{{ form.hidden_tag() }}
+</form>
+
+{% include 'footer.html' %}
