@@ -3,6 +3,7 @@ from flask import (flash, Flask, render_template as flask_render_template,
                    url_for)
 from flask.ext.login import (current_user, login_required, login_user,
                              logout_user, LoginManager, redirect)
+import mail
 from models import db, User
 from forms import LoginForm, RegistrationForm
 import os
@@ -105,6 +106,9 @@ def register():
         u = User(email, display_name, password)
         db.session.add(u)
         db.session.commit()
+
+        # TODO: Capture first and last name? personalized email?
+        mail.send_welcome_email(email)
 
         login_user(u)
         return redirect(url_for("resumes"))
