@@ -13,7 +13,7 @@
         {% for resume in resumes %}
         <tr>
             <td><a href="/{{current_user.display_name}}/{{resume.slug}}">{{ resume.title }}</a></td>
-            <td><small>{{ current_user.display_name }}/</small><b>{{ resume.slug }}</b></td>
+            <td><small>{{ current_user.display_name }}/</small><b>{{ resume.slug }}</b> [edit]</td>
             <td>[edit] [delete] [clone] [make default] [make public]</td>
         </tr>
         {% endfor %}
