@@ -23,6 +23,8 @@ class RegistrationForm(Form):
             raise ValidationError('Email address already taken')
 
     def validate_display_name(form, field):
+        # TODO: only valid URL characters
+
         if [c for c in field.data if c in string.whitespace]:
             raise ValidationError('Display name cannot contain whitespace')
 

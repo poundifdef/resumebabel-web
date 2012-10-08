@@ -4,7 +4,7 @@ from flask import (flash, Flask, render_template as flask_render_template,
 from flask.ext.login import (current_user, login_required, login_user,
                              logout_user, LoginManager, redirect)
 import mail
-from models import db, User
+from models import db, User, Resume
 from forms import LoginForm, RegistrationForm
 import os
 
@@ -89,7 +89,8 @@ def logout():
 @app.route('/resumes')
 @login_required
 def resumes():
-    return render_template('resumes.html')
+    resumes = Resume.query.filter_by(user=current_user).all()
+    return render_template('resumes.html', resumes=resumes)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -129,6 +130,10 @@ if __name__ == "__main__":
         u = User('admin', 'admin', 'peach')
         u.admin = True
         db.session.add(u)
+
+        r = Resume('Test Resume', 'test-resume-slug', u)
+        db.session.add(r)
+
         db.session.commit()
 
     ctx.pop()

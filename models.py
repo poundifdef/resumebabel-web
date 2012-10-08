@@ -28,3 +28,25 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<User %r>' % (self.email)
+
+
+class Resume(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(128), unique=False, nullable=False)
+    slug = db.Column(db.String(128), unique=False, nullable=False)
+    public = db.Column(db.Boolean, default=False, unique=False,
+                       nullable=False)
+    default = db.Column(db.Boolean, default=False, unique=False,
+                        nullable=False)
+
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user = db.relationship('User', backref=db.backref('resumes',
+                           lazy='dynamic'))
+
+    def __init__(self, title, slug, user):
+        self.title = title
+        self.slug = slug
+        self.user = user
+
+    def __repr__(self):
+        return '<Resume %s: %s>' % (self.user.email, self.title)

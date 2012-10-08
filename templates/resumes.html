@@ -1,5 +1,28 @@
 {% include 'header.html' %}
 
-list of my resumes. select one to edit. or clone one. or export. 
+{% if resumes %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>URL</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for resume in resumes %}
+        <tr>
+            <td>{{ resume.title }}</td>
+            <td><small>{{ current_user.display_name }}/</small><b>{{ resume.slug }}</b></td>
+            <td>[edit] [delete] [clone] [make default] [make public]</td>
+        </tr>
+        {% endfor %}
+    <tbody>
+</table>
+
+{% else %}
+Go ahead and <a href="#">Create a resume!</a>
+{% endif %}
 
 {% include 'footer.html' %}
