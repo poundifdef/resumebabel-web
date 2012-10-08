@@ -131,8 +131,10 @@ if __name__ == "__main__":
         u.admin = True
         db.session.add(u)
 
-        r = Resume('Test Resume', 'test-resume-slug', u)
-        db.session.add(r)
+        r1 = Resume('Test Resume', 'test-resume-slug', u)
+        db.session.add(r1)
+        r2 = Resume('Google Resume', 'google', u)
+        db.session.add(r2)
 
         db.session.commit()
 
