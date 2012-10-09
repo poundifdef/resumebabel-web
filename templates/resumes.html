@@ -12,9 +12,20 @@
     <tbody>
         {% for resume in resumes %}
         <tr>
-            <td><a href="/{{current_user.display_name}}/{{resume.slug}}">{{ resume.title }}</a></td>
-            <td><small>{{ current_user.display_name }}/</small><b>{{ resume.slug }}</b> [edit]</td>
-            <td>[edit] [delete] [clone] [make default] [make public]</td>
+            <td>
+                <a href="/{{current_user.display_name}}/{{resume.slug}}">{{ resume.title }}</a>
+                <a class="btn btn-mini" href="#"><i class="icon-pencil"></i></a>
+            </td>
+            <td>
+                <small>{{ current_user.display_name }}/</small><b>{{ resume.slug }}</b>
+                <a class="btn btn-mini" href="#"><i class="icon-pencil"></i></a>
+            </td>
+            <td>
+                <button type="submit" class="btn btn-mini">Clone</button>
+                <button type="submit" class="btn btn-mini">Make Default</button>
+                <button type="submit" class="btn btn-mini">Make Public</button>
+                <a href="#" class="btn btn-mini btn-danger delete_resume">Delete</a>
+            </td>
         </tr>
         {% endfor %}
     <tbody>

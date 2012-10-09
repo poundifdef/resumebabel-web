@@ -14,5 +14,11 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static',filename='js/bootbox.min.js')}}"></script>
+
+    {% if has_js %}
+    <script src="{{url_for('static',filename='js/pages' + request.path + '.js')}}"></script>
+    {% endif %}
+
 </body>
 </html>

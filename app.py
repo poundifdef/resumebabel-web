@@ -90,7 +90,7 @@ def logout():
 @login_required
 def resumes():
     resumes = Resume.query.filter_by(user=current_user).all()
-    return render_template('resumes.html', resumes=resumes)
+    return render_template('resumes.html', resumes=resumes, has_js=True)
 
 
 @app.route('/register', methods=['GET', 'POST'])
