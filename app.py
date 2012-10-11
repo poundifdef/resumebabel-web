@@ -92,6 +92,11 @@ def resumes():
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True)
 
+@app.route('/newresume')
+@login_required
+def newresume():
+    return render_template('newresume.html')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
