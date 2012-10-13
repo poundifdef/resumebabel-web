@@ -16,9 +16,11 @@
                 <a class="btn btn-mini" href="#"><i class="icon-pencil"></i></a>
             </td>
             <td>
-                <button type="submit" class="btn btn-mini">Clone</button>
-                <button type="submit" class="btn btn-mini">Make Default</button>
-                <a href="#" data-delete-id="{{resume.id}}" class="btn btn-mini btn-danger delete_resume">Delete</a>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-small">Clone</button>
+                    <button type="submit" class="btn btn-small">Make Default</button>
+                    <a href="#" data-delete-id="{{resume.id}}" class="btn btn-small btn-danger delete_resume">Delete</a>
+                </div>
             </td>
         </tr>
         {% endfor %}
