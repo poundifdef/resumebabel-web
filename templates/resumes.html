@@ -18,7 +18,11 @@
             <td>
                 <div class="btn-group">
                     <a href="#" data-clone-id="{{resume.id}}" class="btn btn-small clone_resume">Clone</a>
-                    <button type="submit" class="btn btn-small">Make Default</button>
+                    {% if resume.default %}
+                        <a href="#" data-default-id="{{resume.id}}" class="btn btn-small active default_resume">Toggle Default</a>
+                    {% else %}
+                        <a href="#" data-default-id="{{resume.id}}" class="btn btn-small default_resume">Toggle Default</a>
+                    {% endif %}
                     <a href="#" data-delete-id="{{resume.id}}" class="btn btn-small btn-danger delete_resume">Delete</a>
                 </div>
             </td>

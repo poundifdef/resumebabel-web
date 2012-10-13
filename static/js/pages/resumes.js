@@ -39,3 +39,14 @@ $("a.clone_resume").click(function(e) {
     })
     location.reload(true);
 });
+
+$("a.default_resume").click(function(e) {
+    e.preventDefault();
+    var resume_id = e.target.getAttribute("data-default-id");
+    $.ajax({
+        type: 'POST',
+        url: '/resumes/default/' + resume_id + '/?api=1',
+        async: false
+    })
+    location.reload(true);
+});
