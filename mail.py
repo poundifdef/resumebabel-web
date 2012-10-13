@@ -34,6 +34,7 @@ def send_email(recipients, subject, message, message_type='plain'):
     server.sendmail(username, msg.get_all('To'), msg.as_string())
     server.quit()
 
+
 def send_welcome_email(email):
     subject = 'Welcome to resumebabel!'
     welcome_message = '''

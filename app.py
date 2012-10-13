@@ -93,6 +93,7 @@ def resumes():
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True)
 
+
 @app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])
 @login_required
 def delete_resume(resume_id):
@@ -103,10 +104,13 @@ def delete_resume(resume_id):
     db.session.delete(resume)
     db.session.commit()
 
+    # TODO: actually delete assets
+
     if request.args.get('api'):
         return jsonify(response='OK')
     else:
         return redirect(url_for("resumes"))
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
