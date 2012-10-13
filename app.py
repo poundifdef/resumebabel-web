@@ -1,5 +1,6 @@
 from bcrypt import hashpw
-from flask import (flash, Flask, render_template as flask_render_template,
+from flask import (abort, flash, Flask, jsonify,
+                   render_template as flask_render_template, request,
                    url_for)
 from flask.ext.login import (current_user, login_required, login_user,
                              logout_user, LoginManager, redirect)
@@ -86,12 +87,26 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route('/resumes')
+@app.route('/resumes/')
 @login_required
 def resumes():
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True)
 
+@app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])
+@login_required
+def delete_resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
+        abort(404)
+
+    db.session.delete(resume)
+    db.session.commit()
+
+    if request.args.get('api'):
+        return jsonify(response='OK')
+    else:
+        return redirect(url_for("resumes"))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():

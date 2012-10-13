@@ -1,4 +1,3 @@
-// TODO: pass name of resume into dialog. somehow.
 $("a.delete_resume").click(function(e) {
     e.preventDefault();
     bootbox.dialog("Are you sure you want to delete this resume?",
@@ -7,7 +6,14 @@ $("a.delete_resume").click(function(e) {
             "label" : "Delete Resume",
             "class" : "btn-primary",
             "callback": function() {
-                console.log("deleted");
+                // TODO: error handling?
+                var resume_id = e.target.getAttribute("data-delete-id");
+                $.ajax({
+                    type: 'POST',
+                    url: '/resumes/delete/' + resume_id + '/?api=1',
+                    async: false
+                })
+                location.reload(true);
             }
         },
         {

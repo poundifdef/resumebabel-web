@@ -42,7 +42,6 @@ class Resume(db.Model, UserMixin):
 
     def __init__(self, title, user):
         self.title = title
-        self.slug = slug
         self.user = user
 
     def __repr__(self):
