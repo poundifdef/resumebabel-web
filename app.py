@@ -95,7 +95,7 @@ def resumes():
 @app.route('/newresume')
 @login_required
 def newresume():
-    return render_template('newresume.html')
+    return render_template('newresume.html', has_js=True)
 
 
 @app.route('/register', methods=['GET', 'POST'])

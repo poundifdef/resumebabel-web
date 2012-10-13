@@ -1,36 +1,91 @@
 {% include 'header.html' %}
 
-<form>
-    <legend>Contact</legend>
+<form class="form-horizontal">
 
+<div id="contactInfo">
+    <div id="legend" class="">
+        <legend class="">Contact</legend>
+    </div>
+    <fieldset id="contactForm">
         <div class="control-group">
-            <label class="control-label" for="fullname">Name</label>
-            <div class="controls">
-                <input type="text" id="fullname">
-            </div>
+              <label class="control-label" for="input01">Name</label>
+              <div class="controls">
+                <input type="text" id="input01" placeholder="" class="input-xlarge">
+              </div>
         </div>
 
+        <div class="control-group">
+              <label class="control-label" for="input02">Email</label>
+              <div class="controls">
+                <input type="text" id="input02" placeholder="" class="input-xlarge">
+              </div>
+        </div>
 
-        
-        <label>Email</label>
-        <input type="text">
-        <label>Phone</label>
-        <input type="text">
-        <label>Location</label>
-        <input type="text">
+        <div class="control-group">
+              <label class="control-label" for="input03">Phone</label>
+              <div class="controls">
+                <input type="text" id="input03" placeholder="" class="input-xlarge">
+              </div>
+        </div>
 
+        <div class="control-group">
+              <label class="control-label" for="input04">Location</label>
+              <div class="controls">
+                <input type="text" id="input04" placeholder="" class="input-xlarge">
+              </div>
+        </div>
+    </fieldset>
+</div>
 
-    <legend>Education</legend>
+<div id="educationInfo">
+    <div id="legend" class="">
+        <legend class="">Education</legend>
+    </div>
+    <div id="educationForms">
+        <fieldset class="educationForm well">
+        <div class="control-group">
+              <label class="control-label" for="input05">Name</label>
+              <div class="controls">
+                <input type="text" id="input05" placeholder="" class="input-xlarge">
+              </div>
+            </div>
 
-        <label>Name</label>
-        <label>Date</label>
-        <label>Degree</label>
-        <label>Description</label>
+        <div class="control-group">
+              <label class="control-label" for="input06">Date</label>
+              <div class="controls">
+                <input type="text" id="input06" placeholder="" class="input-xlarge">
+              </div>
+            </div>
 
+        <div class="control-group">
+              <label class="control-label" for="input07">Degree</label>
+              <div class="controls">
+                <input type="text" id="input07" placeholder="" class="input-xlarge">
+              </div>
+            </div>
 
-    <legend>Experience</legend>
+        <div class="control-group">
+              <label class="control-label">Description</label>
+              <div class="controls">
+                <div class="textarea">
+                      <textarea type="" class=""> </textarea>
+                </div>
+              </div>
+        </div>       
+        </fieldset>        
+    </div>
+    <div class="control-group">
+              <label class="control-label"></label>
 
+              <!-- Button -->
+              <div class="controls">
+                <button id="addEducation" class="btn btn-success">Add Education</button>
+              </div>
+    </div>
+</div>
 
 </form>
+
+
 
 {% include 'footer.html' %}
