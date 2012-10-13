@@ -28,3 +28,14 @@ $("a.delete_resume").click(function(e) {
         "animate": false
     });
 });
+
+$("a.clone_resume").click(function(e) {
+    e.preventDefault();
+    var resume_id = e.target.getAttribute("data-clone-id");
+    $.ajax({
+        type: 'POST',
+        url: '/resumes/clone/' + resume_id + '/?api=1',
+        async: false
+    })
+    location.reload(true);
+});

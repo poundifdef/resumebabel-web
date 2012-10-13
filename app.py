@@ -104,7 +104,26 @@ def delete_resume(resume_id):
     db.session.delete(resume)
     db.session.commit()
 
-    # TODO: actually delete assets
+    # TODO: DELETE ASSETS TOO
+
+    if request.args.get('api'):
+        return jsonify(response='OK')
+    else:
+        return redirect(url_for("resumes"))
+
+
+@app.route('/resumes/clone/<int:resume_id>/', methods=['POST'])
+@login_required
+def clone_resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
+        abort(404)
+
+    cloned_resume = Resume(resume.title + ' [CLONE]', current_user)
+    db.session.add(cloned_resume)
+    db.session.commit()
+
+    # TODO: CLONE JSON ASSET (IF IT EXISTS)
 
     if request.args.get('api'):
         return jsonify(response='OK')
