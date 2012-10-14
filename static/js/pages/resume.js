@@ -63,6 +63,35 @@ function loadEducation(resumeObject){
     }
 }
 
+function loadExperience(resumeObject){
+    $('#experienceForms fieldset.experienceForm').remove();
+    var proexperiences = resumeObject.experiences['Professional Experience'];
+    for (var i = 0, ex; ex = proexperiences[i]; i++){
+        addExperience(ex, 'Professional Experience');
+    }
+
+    var openexperiences = resumeObject.experiences['Open Source'];
+    for (var i = 0, ex; ex = openexperiences[i]; i++){
+        addExperience(ex, 'Open Source');
+    }
+
+    var resexperiences = resumeObject.experiences['Research and Projects'];
+    for (var i = 0, ex; ex = resexperiences[i]; i++){
+        addExperience(ex, 'Research and Projects');
+    }
+
+    var honexperiences = resumeObject.experiences['Awards and Honors'];
+    for (var i = 0, ex; ex = honexperiences[i]; i++){
+        addExperience(ex, 'Awards and Honors');
+    }
+
+    var tchexperiences = resumeObject.experiences['Teaching and Service'];
+    for (var i = 0, ex; ex = tchexperiences[i]; i++){
+        addExperience(ex, 'Teaching and Service');
+    }
+
+}
+
 function loadResume(resumeId){
     //$.get("/resumes/" + String(resumeId) + "/resume.json
     $.get("/resumes/" + String(resumeId) + "/?api=1", function(data){
@@ -70,12 +99,27 @@ function loadResume(resumeId){
         loadObjective(resume);
         loadContact(resume);
         loadEducation(resume);
+        loadExperience(resume);
     });
 }
 
 function addEducation(educationObject){
     var newEducationForm = educationTemplate.clone();
-    // var nameloc = newEducationForm.find();
-    // newEducationForm.find("div.name input").val(educationObject.name);
+    newEducationForm.find('div.name input').val(educationObject.name);
+    newEducationForm.find('div.date input').val(educationObject.date);
+    newEducationForm.find('div.degree input').val(educationObject.degree);
+    newEducationForm.find('div.description textarea').val(educationObject.description);
     $("#educationForms").append(newEducationForm);
+}
+
+function addExperience(experienceObject, experienceType){
+    var newExperienceForm = experienceTemplate.clone();
+    newExperienceForm.find('div.type select').val(experienceType);
+    newExperienceForm.find('div.name input').val(experienceObject.name);
+    newExperienceForm.find('div.location input').val(experienceObject.location);
+    newExperienceForm.find('div.title input').val(experienceObject.title);
+    newExperienceForm.find('div.date input').val(experienceObject.date);
+    newExperienceForm.find('div.description textarea').val(experienceObject.description);
+    $("#experienceForms").append(newExperienceForm);
+    //newExperienceForm.find('div.type select').val(experienceObject.);
 }
