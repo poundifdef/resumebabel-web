@@ -1,9 +1,10 @@
 from bcrypt import hashpw
 from flask import (abort, flash, Flask, jsonify,
                    render_template as flask_render_template, request,
-                   url_for)
+                   send_from_directory, url_for)
 from flask.ext.login import (current_user, login_required, login_user,
                              logout_user, LoginManager, redirect)
+import json
 import mail
 from models import db, User, Resume
 from forms import LoginForm, RegistrationForm
@@ -100,6 +101,31 @@ def resumes():
 
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True)
+
+
+@app.route('/resumes/<int:resume_id>/', methods=['GET', 'POST'])
+@login_required
+def resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
+        abort(404)
+
+    if request.method == 'GET':
+        if request.args.get('api'):
+            return send_from_directory(app.config['RESUME_FOLDER'],
+                                       'output.json',
+                                       mimetype='application/json',
+                                       as_attachment=False)
+
+    if request.method == 'POST':
+        if request.args.get('api'):
+            try:
+                new_resume = json.loads(request.form['resume'])
+                return jsonify(response='OK', error=[])
+            except Exception as ex:
+                return jsonify(response='Error', error=[str(ex)])
+
+    return render_template('resume.html', has_js=True)
 
 
 @app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])
