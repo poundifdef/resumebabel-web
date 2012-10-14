@@ -10,6 +10,8 @@ from models import db, User, Resume
 from forms import LoginForm, RegistrationForm
 import os
 import sys
+import glob
+import shutil
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
@@ -178,7 +180,9 @@ def delete_resume(resume_id):
     db.session.delete(resume)
     db.session.commit()
 
-    # TODO: DELETE ASSETS TOO
+    to_delete = glob.glob(app.config['RESUME_FOLDER'] + '/%d.*' % (resume_id))
+    for filename in to_delete:
+        os.unlink(filename)
 
     if request.args.get('api'):
         return jsonify(response='OK')
@@ -197,7 +201,10 @@ def clone_resume(resume_id):
     db.session.add(cloned_resume)
     db.session.commit()
 
-    # TODO: CLONE JSON ASSET (IF IT EXISTS)
+    src = app.config['RESUME_FOLDER'] + ('/%d.json' % (resume_id))
+    dest = app.config['RESUME_FOLDER'] + ('/%d.json' % (cloned_resume.id))
+    if os.path.isfile(src):
+        shutil.copy(src, dest)
 
     if request.args.get('api'):
         return jsonify(response='OK')
