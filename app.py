@@ -120,7 +120,27 @@ def resume(resume_id):
     if request.method == 'POST':
         if request.args.get('api'):
             try:
+                if len(request.form['resume']) > 65535:
+                    raise Exception('Resume json can be no more than 64k')
+
                 new_resume = json.loads(request.form['resume'])
+
+                # TODO: properly validate json
+                required_fields = {'contact': {}, 'education': [], 'experiences': {}}
+                for field, field_type in required_fields.iteritems():
+                    value = new_resume.get(field, None)
+                    if value is None:
+                        raise Exception('Resume must have these fields: ' + str(required_fields))
+                    if type(value) != type(field_type):
+                        raise Exception('Resume must have these fields: ' + str(required_fields))
+
+
+                resume_name = '%d.json' % (resume_id)
+                resume_path = os.path.join(app.config['RESUME_FOLDER'], resume_name)
+                fd = open(resume_path, 'w')
+                fd.write(request.form['resume'])
+                fd.close()
+
                 return jsonify(response='OK', error=[])
             except Exception as ex:
                 return jsonify(response='Error', error=[str(ex)])
