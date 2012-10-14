@@ -9,9 +9,14 @@ import mail
 from models import db, User, Resume
 from forms import LoginForm, RegistrationForm
 import os
+import sys
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
+
+sys.path.append(app.config['RESUMEBABEL'])
+
+
 db.init_app(app)
 
 
@@ -126,6 +131,42 @@ def resume(resume_id):
                 return jsonify(response='Error', error=[str(ex)])
 
     return render_template('resume.html', has_js=True)
+
+
+@app.route('/resumes/<int:resume_id>/resume.<string:file_format>')
+@login_required
+def download_resume(resume_id, file_format):
+    from resumebabel.resumebabel import ResumeBabel 
+
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume or file_format not in ResumeBabel.get_supported_formats():
+        abort(404)
+
+    resume_name = '%d.json' % (resume_id)
+    resume_path = os.path.join(app.config['RESUME_FOLDER'], resume_name)
+
+    file_name = '%d.%s' % (resume_id, file_format)
+    file_path = os.path.join(app.config['RESUME_FOLDER'], file_name)
+
+    resume_json = None
+    if os.path.isfile(resume_path):
+        resume_json = open(resume_path, 'r').read()
+
+    if file_format != 'json':
+        if not os.path.isfile(file_path):
+            out_fd = open(file_path, 'w')
+            r = ResumeBabel(resume_json)
+            r.export_resume(out_fd, file_format)
+            out_fd.close()
+
+    as_attachment = False
+    if request.args.get('download'):
+        as_attachment = True
+
+    # TODO: mimetype='application/json' ????
+    return send_from_directory(app.config['RESUME_FOLDER'],
+                               file_name, attachment_filename=('resume.' + file_format),
+                               cache_timeout=60, as_attachment=as_attachment)
 
 
 @app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])
