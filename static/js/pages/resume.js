@@ -1,4 +1,3 @@
-//wait for the entire document to load before loading
 $(document).ready(function(){
     
     $("button.addEducation").click(function() {
