@@ -68,3 +68,18 @@ $("a.rename_resume").click(function(e) {
         }
     }, e.target.getAttribute("data-default-value"));
 });
+
+$("a.create_resume").click(function(e) {
+    e.preventDefault();
+    bootbox.prompt("Enter a new name for this resume:", "Cancel", "OK", function(result) {
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                url: '/resumes/?api=1',
+                data: {'title': result},
+                async: false
+            })
+            location.reload(true);
+        }
+    });
+});

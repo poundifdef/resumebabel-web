@@ -87,9 +87,17 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route('/resumes/')
+@app.route('/resumes/', methods=['GET', 'POST'])
 @login_required
 def resumes():
+    if request.method == 'POST':
+        resume = Resume(request.form['title'], current_user)
+        db.session.add(resume)
+        db.session.commit()
+
+        if request.args.get('api'):
+            return jsonify(response='OK')
+
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True)
 
