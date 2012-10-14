@@ -1,12 +1,184 @@
 {% include 'header.html' %}
 
-<p>This is the screen where you edit the resume.</p>
+<form class="form-horizontal">
+	<div id="objectiveInfo">
+		<div id="legend" class="">
+			<legend class="">Objective</legend>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<div class="textarea objective">
+					<textarea type="" class=""> </textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="contactInfo">
+		<div id="legend" class="">
+			<legend class="">Contact</legend>
+		</div>
+		<fieldset id="contactForm">
+			<div class="control-group">
+				<label class="control-label" for="input01">Name</label>
+				<div class="controls name">
+					<input type="text" id="input01" placeholder="" class="input-xlarge">
+				</div>
+			</div>
 
-<p>This form POSTs the new resume contents. (It doesn't actually save; this is for testing the ajax call.)</p>
-<form method="post" action="{{request.path}}?api=1">
-    <textarea rows="10" name="resume">{"foo": "bar"}</textarea>
-    <br>
-    <input type="submit" value="save resume">
+			<div class="control-group">
+				<label class="control-label" for="input02">Email</label>
+				<div class="controls email">
+					<input type="text" id="input02" placeholder="" class="input-xlarge">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="input03">Phone</label>
+				<div class="controls phone">
+					<input type="text" id="input03" placeholder="" class="input-xlarge">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="input04">Location</label>
+				<div class="controls location">
+					<input type="text" id="input04" placeholder="" class="input-xlarge">
+				</div>
+			</div>
+		</fieldset>
+	</div>
+
+	<div id="educationInfo">
+		<div id="legend" class="">
+			<legend class="">Education</legend>
+		</div>
+		<div id="educationForms">
+			<fieldset class="educationForm well">
+				<div class="control-group">
+					<label class="control-label" for="input05">Name</label>
+					<div class="controls">
+						<input type="text" id="input05" placeholder="" class="input-xlarge">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="input06">Date</label>
+					<div class="controls">
+						<input type="text" id="input06" placeholder="" class="input-xlarge">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="input07">Degree</label>
+					<div class="controls">
+						<input type="text" id="input07" placeholder="" class="input-xlarge">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Description</label>
+					<div class="controls">
+						<div class="textarea">
+							<textarea type="" class=""> </textarea>
+						</div>
+					</div>
+				</div>       
+			</fieldset>        
+		</div>
+		<div class="control-group">
+			<label class="control-label"></label>
+
+			<!-- Button -->
+			<div class="controls">
+				<button class="btn btn-success addEducation">Add Education</button>
+			</div>
+		</div>
+	</div>
+
+	<div id='experienceInfo'>
+		<div id="legend" class="">
+			<legend class="">Experience</legend>
+		</div>
+		<div id='experienceForms'>
+			<fieldset class='experienceForm well'>		      
+				<div class="control-group">
+					<label class="control-label">Type</label>
+					<div class="controls">
+						<select class="input-xlarge">
+							<option>Professional</option>
+							<option>Open Source</option>
+							<option>Research and Projects</option>
+							<option>Awards and Honors</option>
+							<option>Teaching and Service</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="control-group">
+
+					<!-- Text input-->
+					<label class="control-label" for="input01">Name</label>
+					<div class="controls">
+						<input type="text" id="input01" placeholder="" class="input-xlarge">
+						<p class="help-block"></p>
+					</div>
+				</div>
+
+				<div class="control-group">
+
+					<!-- Text input-->
+					<label class="control-label" for="input01">Location</label>
+					<div class="controls">
+						<input type="text" id="input01" placeholder="" class="input-xlarge">
+						<p class="help-block"></p>
+					</div>
+				</div>
+
+
+
+				<div class="control-group">
+
+					<!-- Text input-->
+					<label class="control-label" for="input01">Title</label>
+					<div class="controls">
+						<input type="text" id="input01" placeholder="" class="input-xlarge">
+						<p class="help-block"></p>
+					</div>
+				</div>
+
+				<div class="control-group">
+
+					<!-- Text input-->
+					<label class="control-label" for="input01">Date</label>
+					<div class="controls">
+						<input type="text" id="input01" placeholder="" class="input-xlarge">
+						<p class="help-block"></p>
+					</div>
+				</div>
+
+				<div class="control-group">
+
+					<!-- Textarea -->
+					<label class="control-label">Description</label>
+					<div class="controls">
+						<div class="textarea">
+							<textarea type="" class=""> </textarea>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="control-group">
+			<label class="control-label"></label>
+
+			<!-- Button -->
+			<div class="controls">
+				<button class="btn btn-success addExperience">Add Experience</button>
+			</div>
+		</div>
+	</div>
+
+	<button class="btn btn-primary saveResume">Save Resume</button>
 </form>
 
 {% include 'footer.html' %}

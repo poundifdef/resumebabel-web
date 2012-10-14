@@ -1,7 +1,7 @@
 $("a.delete_resume").click(function(e) {
     e.preventDefault();
     bootbox.dialog("Are you sure you want to delete this resume?",
-    [
+        [
         {
             "label" : "Delete Resume",
             "class" : "btn-primary",
@@ -23,10 +23,10 @@ $("a.delete_resume").click(function(e) {
                 console.log("cancel");
             }
         }
-    ],
-    {
-        "animate": false
-    });
+        ],
+        {
+            "animate": false
+        });
 });
 
 $("a.clone_resume").click(function(e) {

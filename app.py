@@ -102,12 +102,6 @@ def resumes():
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True)
 
-@app.route('/newresume')
-@login_required
-def newresume():
-    return render_template('newresume.html', has_js=True)
-
-
 @app.route('/resumes/<int:resume_id>/', methods=['GET', 'POST'])
 @login_required
 def resume(resume_id):
@@ -130,7 +124,7 @@ def resume(resume_id):
             except Exception as ex:
                 return jsonify(response='Error', error=[str(ex)])
 
-    return render_template('resume.html', has_js=True)
+    return render_template('resume.html', has_js=True, get_resume=True)
 
 
 @app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])

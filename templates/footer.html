@@ -17,7 +17,14 @@
     <script src="{{url_for('static',filename='js/bootbox.min.js')}}"></script>
 
     {% if has_js %}
-    <script src="{{url_for('static',filename='js/pages' + request.path[:-1] + '.js')}}"></script>
+    <script src="{{url_for('static',filename='js/pages/' + request.path.split('/')[1]|string + '.js')}}"></script>
+    {% endif %}
+
+    {% if get_resume %}
+    <script src="{{url_for('static',filename='js/pages/resume.js')}}"></script>
+    <script type="text/javascript">
+        loadResume({{request.path.split('/')[2]|string}});
+    </script>
     {% endif %}
 
 </body>
