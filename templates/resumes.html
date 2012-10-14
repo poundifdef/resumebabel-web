@@ -1,5 +1,37 @@
 {% include 'header.html' %}
 
-list of my resumes. select one to edit. or clone one. or export. 
+{% if resumes %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for resume in resumes %}
+        <tr>
+            <td>
+                <a href="/{{current_user.display_name}}/{{resume.id}}">{{ resume.title }}</a>
+                <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{resume.title}}" class="icon-pencil rename_resume">&nbsp;</a>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <a href="#" data-clone-id="{{resume.id}}" class="btn btn-small clone_resume">Clone</a>
+                    {% if resume.default %}
+                        <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{not resume.default}}" class="btn btn-small active default_resume">Toggle Default</a>
+                    {% else %}
+                        <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{not resume.default}}" class="btn btn-small default_resume">Toggle Default</a>
+                    {% endif %}
+                    <a href="#" data-delete-id="{{resume.id}}" class="btn btn-small btn-danger delete_resume">Delete</a>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    <tbody>
+</table>
+{% endif %}
+
+Go ahead and <a href="#" class="create_resume">create a new resume!</a>
 
 {% include 'footer.html' %}
