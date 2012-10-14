@@ -33,9 +33,6 @@ class User(db.Model, UserMixin):
 class Resume(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(128), unique=False, nullable=False)
-    slug = db.Column(db.String(128), unique=False, nullable=False)
-    public = db.Column(db.Boolean, default=False, unique=False,
-                       nullable=False)
     default = db.Column(db.Boolean, default=False, unique=False,
                         nullable=False)
 
@@ -43,9 +40,8 @@ class Resume(db.Model, UserMixin):
     user = db.relationship('User', backref=db.backref('resumes',
                            lazy='dynamic'))
 
-    def __init__(self, title, slug, user):
+    def __init__(self, title, user):
         self.title = title
-        self.slug = slug
         self.user = user
 
     def __repr__(self):

@@ -5,7 +5,6 @@
     <thead>
         <tr>
             <th>Title</th>
-            <th>URL</th>
             <th>Options</th>
         </tr>
     </thead>
@@ -13,18 +12,19 @@
         {% for resume in resumes %}
         <tr>
             <td>
-                <a href="/{{current_user.display_name}}/{{resume.slug}}">{{ resume.title }}</a>
-                <a class="btn btn-mini" href="#"><i class="icon-pencil"></i></a>
+                <a href="/resumes/{{resume.id}}">{{ resume.title }}</a>
+                <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{resume.title}}" class="icon-pencil rename_resume">&nbsp;</a>
             </td>
             <td>
-                <small>{{ current_user.display_name }}/</small><b>{{ resume.slug }}</b>
-                <a class="btn btn-mini" href="#"><i class="icon-pencil"></i></a>
-            </td>
-            <td>
-                <button type="submit" class="btn btn-mini">Clone</button>
-                <button type="submit" class="btn btn-mini">Make Default</button>
-                <button type="submit" class="btn btn-mini">Make Public</button>
-                <a href="#" class="btn btn-mini btn-danger delete_resume">Delete</a>
+                <div class="btn-group">
+                    <a href="#" data-clone-id="{{resume.id}}" class="btn btn-small clone_resume">Clone</a>
+                    {% if resume.default %}
+                        <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{not resume.default}}" class="btn btn-small active default_resume">Toggle Default</a>
+                    {% else %}
+                        <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{not resume.default}}" class="btn btn-small default_resume">Toggle Default</a>
+                    {% endif %}
+                    <a href="#" data-delete-id="{{resume.id}}" class="btn btn-small btn-danger delete_resume">Delete</a>
+                </div>
             </td>
         </tr>
         {% endfor %}

@@ -17,7 +17,7 @@
     <script src="{{url_for('static',filename='js/bootbox.min.js')}}"></script>
 
     {% if has_js %}
-    <script src="{{url_for('static',filename='js/pages' + request.path + '.js')}}"></script>
+    <script src="{{url_for('static',filename='js/pages' + request.path[:-1] + '.js')}}"></script>
     {% endif %}
 
 </body>

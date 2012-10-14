@@ -1,0 +1,12 @@
+{% include 'header.html' %}
+
+<p>This is the screen where you edit the resume.</p>
+
+<p>This form POSTs the new resume contents. (It doesn't actually save; this is for testing the ajax call.)</p>
+<form method="post" action="{{request.path}}?api=1">
+    <textarea rows="10" name="resume">{"foo": "bar"}</textarea>
+    <br>
+    <input type="submit" value="save resume">
+</form>
+
+{% include 'footer.html' %}

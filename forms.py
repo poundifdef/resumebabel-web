@@ -15,7 +15,8 @@ class RegistrationForm(Form):
                       Length(max=128)])
     display_name = TextField("Display Name", validators=[Required(),
                              Length(max=32)])
-    password = PasswordField("Password", validators=[Required(), Length(min=8)])
+    password = PasswordField("Password", validators=[Required(),
+                             Length(min=8)])
     submit = SubmitField("Register")
 
     def validate_email(form, field):
