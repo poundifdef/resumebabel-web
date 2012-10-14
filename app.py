@@ -1,10 +1,11 @@
 from bcrypt import hashpw
-from flask import (flash, Flask, render_template as flask_render_template,
+from flask import (abort, flash, Flask, jsonify,
+                   render_template as flask_render_template, request,
                    url_for)
 from flask.ext.login import (current_user, login_required, login_user,
                              logout_user, LoginManager, redirect)
 import mail
-from models import db, User
+from models import db, User, Resume
 from forms import LoginForm, RegistrationForm
 import os
 
@@ -86,10 +87,90 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route('/resumes')
+@app.route('/resumes/', methods=['GET', 'POST'])
 @login_required
 def resumes():
-    return render_template('resumes.html')
+    if request.method == 'POST':
+        resume = Resume(request.form['title'], current_user)
+        db.session.add(resume)
+        db.session.commit()
+
+        if request.args.get('api'):
+            return jsonify(response='OK')
+
+    resumes = Resume.query.filter_by(user=current_user).all()
+    return render_template('resumes.html', resumes=resumes, has_js=True)
+
+
+@app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])
+@login_required
+def delete_resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
+        abort(404)
+
+    db.session.delete(resume)
+    db.session.commit()
+
+    # TODO: DELETE ASSETS TOO
+
+    if request.args.get('api'):
+        return jsonify(response='OK')
+    else:
+        return redirect(url_for("resumes"))
+
+
+@app.route('/resumes/clone/<int:resume_id>/', methods=['POST'])
+@login_required
+def clone_resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
+        abort(404)
+
+    cloned_resume = Resume(resume.title + ' [CLONE]', current_user)
+    db.session.add(cloned_resume)
+    db.session.commit()
+
+    # TODO: CLONE JSON ASSET (IF IT EXISTS)
+
+    if request.args.get('api'):
+        return jsonify(response='OK')
+    else:
+        return redirect(url_for("resumes"))
+
+
+@app.route('/resumes/edit/<int:resume_id>/', methods=['POST'])
+@login_required
+def edit_resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
+        abort(404)
+
+    for field, value in request.form.iteritems():
+        print field, value
+        print type(field), type(value)
+        if field == 'default':
+            if value == 'True':
+                resume.default = True
+                resumes = Resume.query.filter_by(user=current_user).all()
+                for r in resumes:
+                    if r.id != resume_id:
+                        r.default = False
+                        db.session.add(r)
+            else:
+                resume.default = False
+
+        if field == 'title':
+            # TODO: error checking!!! What if title is blank or all whitespace?
+            resume.title = value
+
+    db.session.add(resume)
+    db.session.commit()
+
+    if request.args.get('api'):
+        return jsonify(response='OK')
+    else:
+        return redirect(url_for("resumes"))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -129,6 +210,12 @@ if __name__ == "__main__":
         u = User('admin', 'admin', 'peach')
         u.admin = True
         db.session.add(u)
+
+        r1 = Resume('Test Resume', u)
+        db.session.add(r1)
+        r2 = Resume('Google Resume', u)
+        db.session.add(r2)
+
         db.session.commit()
 
     ctx.pop()
