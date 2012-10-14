@@ -93,8 +93,7 @@ function loadExperience(resumeObject){
 }
 
 function loadResume(resumeId){
-    //$.get("/resumes/" + String(resumeId) + "/resume.json
-    $.get("/resumes/" + String(resumeId) + "/?api=1", function(data){
+    $.get("/resumes/" + String(resumeId) + "/resume.json", function(data){
         resume = (typeof data == "string") ? jQuery.parseJSON(data) : data;
         loadObjective(resume);
         loadContact(resume);
@@ -121,5 +120,4 @@ function addExperience(experienceObject, experienceType){
     newExperienceForm.find('div.date input').val(experienceObject.date);
     newExperienceForm.find('div.description textarea').val(experienceObject.description);
     $("#experienceForms").append(newExperienceForm);
-    //newExperienceForm.find('div.type select').val(experienceObject.);
 }
