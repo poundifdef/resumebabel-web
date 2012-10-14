@@ -12,7 +12,7 @@
         {% for resume in resumes %}
         <tr>
             <td>
-                <a href="/{{current_user.display_name}}/{{resume.id}}">{{ resume.title }}</a>
+                <a href="/resumes/{{resume.id}}">{{ resume.title }}</a>
                 <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{resume.title}}" class="icon-pencil rename_resume">&nbsp;</a>
             </td>
             <td>
