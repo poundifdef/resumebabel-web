@@ -42,11 +42,29 @@ $("a.clone_resume").click(function(e) {
 
 $("a.default_resume").click(function(e) {
     e.preventDefault();
-    var resume_id = e.target.getAttribute("data-default-id");
+    var resume_id = e.target.getAttribute("data-edit-id");
     $.ajax({
         type: 'POST',
-        url: '/resumes/default/' + resume_id + '/?api=1',
+        url: '/resumes/edit/' + resume_id + '/?api=1',
+        data: {'default': e.target.getAttribute("data-default-value")},
         async: false
     })
     location.reload(true);
+});
+
+$("a.rename_resume").click(function(e) {
+    e.preventDefault();
+    var resume_id = e.target.getAttribute("data-edit-id");
+
+    bootbox.prompt("Enter a new name for this resume:", "Cancel", "OK", function(result) {
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                url: '/resumes/edit/' + resume_id + '/?api=1',
+                data: {'title': result},
+                async: false
+            })
+            location.reload(true);
+        }
+    }, e.target.getAttribute("data-default-value"));
 });

@@ -13,15 +13,15 @@
         <tr>
             <td>
                 <a href="/{{current_user.display_name}}/{{resume.id}}">{{ resume.title }}</a>
-                <a class="btn btn-mini" href="#"><i class="icon-pencil"></i></a>
+                <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{resume.title}}" class="icon-pencil rename_resume">&nbsp;</a>
             </td>
             <td>
                 <div class="btn-group">
                     <a href="#" data-clone-id="{{resume.id}}" class="btn btn-small clone_resume">Clone</a>
                     {% if resume.default %}
-                        <a href="#" data-default-id="{{resume.id}}" class="btn btn-small active default_resume">Toggle Default</a>
+                        <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{not resume.default}}" class="btn btn-small active default_resume">Toggle Default</a>
                     {% else %}
-                        <a href="#" data-default-id="{{resume.id}}" class="btn btn-small default_resume">Toggle Default</a>
+                        <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{not resume.default}}" class="btn btn-small default_resume">Toggle Default</a>
                     {% endif %}
                     <a href="#" data-delete-id="{{resume.id}}" class="btn btn-small btn-danger delete_resume">Delete</a>
                 </div>

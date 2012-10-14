@@ -131,20 +131,32 @@ def clone_resume(resume_id):
         return redirect(url_for("resumes"))
 
 
-@app.route('/resumes/default/<int:resume_id>/', methods=['POST'])
+@app.route('/resumes/edit/<int:resume_id>/', methods=['POST'])
 @login_required
-def default_resume(resume_id):
-    resumes = Resume.query.filter_by(user=current_user).all()
-    if not resumes:
+def edit_resume(resume_id):
+    resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
+    if not resume:
         abort(404)
 
-    for resume in resumes:
-        if resume.id == resume_id:
-            resume.default = not resume.default
-        else:
-            resume.default = False
-        db.session.add(resume)
+    for field, value in request.form.iteritems():
+        print field, value
+        print type(field), type(value)
+        if field == 'default':
+            if value == 'True':
+                resume.default = True
+                resumes = Resume.query.filter_by(user=current_user).all()
+                for r in resumes:
+                    if r.id != resume_id:
+                        r.default = False
+                        db.session.add(r)
+            else:
+                resume.default = False
 
+        if field == 'title':
+            # TODO: error checking!!! What if title is blank or all whitespace?
+            resume.title = value
+
+    db.session.add(resume)
     db.session.commit()
 
     if request.args.get('api'):
