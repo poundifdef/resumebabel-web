@@ -117,13 +117,6 @@ def resume(resume_id):
     if not resume:
         abort(404)
 
-    if request.method == 'GET':
-        if request.args.get('api'):
-            return send_from_directory(app.config['RESUME_FOLDER'],
-                                       'output.json',
-                                       mimetype='application/json',
-                                       as_attachment=False)
-
     if request.method == 'POST':
         if request.args.get('api'):
             try:
