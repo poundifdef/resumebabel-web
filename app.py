@@ -152,12 +152,11 @@ def download_resume(resume_id, file_format):
     if os.path.isfile(resume_path):
         resume_json = open(resume_path, 'r').read()
 
-    if file_format != 'json':
-        if not os.path.isfile(file_path):
-            out_fd = open(file_path, 'w')
-            r = ResumeBabel(resume_json)
-            r.export_resume(out_fd, file_format)
-            out_fd.close()
+    if not os.path.isfile(file_path):
+        out_fd = open(file_path, 'w')
+        r = ResumeBabel(resume_json)
+        r.export_resume(out_fd, file_format)
+        out_fd.close()
 
     as_attachment = False
     if request.args.get('download'):
