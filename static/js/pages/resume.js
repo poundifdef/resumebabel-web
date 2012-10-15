@@ -70,9 +70,11 @@ function loadExperience(resumeObject){
     var exs = resumeObject.experiences;
 
     for (var exname in exs){
-        var ex = exs[exname];
-        for (var i = 0, e; e = ex[i];i++){
-            addExperience(e,exname)
+        if(exs.hasOwnProperty(exname)){            
+            var ex = exs[exname];
+            for (var i = 0, e; e = ex[i];i++){
+                addExperience(e,exname)
+            }
         }
     }
 }
