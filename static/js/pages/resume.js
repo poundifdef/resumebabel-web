@@ -1,7 +1,8 @@
 $(document).ready(function(){
     
     $("button.addEducation").click(function() {
-        addEducation();
+        var newEducationForm = educationTemplate.clone();
+        $("#educationForms").append(newEducationForm);
         return false;
     });
 
