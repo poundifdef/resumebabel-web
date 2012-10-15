@@ -1,6 +1,0 @@
-[submodule "resumebabel"]
-	path = resumebabel
-	url = git@github.com:poundifdef/resumebabel.git
-[submodule "master"]
-	path = master
-	url = https://github.com/poundifdef/resumebabel.git
