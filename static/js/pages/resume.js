@@ -11,19 +11,19 @@ $(document).ready(function(){
     });
 
     $("button.saveResume").click(function(){
-        resume.objective = $("div.objective textarea").val;
+        resume.objective = cleanUndefined($("div.objective textarea").val);
 
         var formName = $("#contactForm div.name input").first.val;
-        resume.contact.name = (typeof formName === "undefined") ? "" : formName;
+        resume.contact.name = cleanUndefined(formName);
 
         var formEmail = $("#contactForm div.email input").first.val;
-        resume.contact.email = (typeof formEmail === "undefined") ? "" : formEmail;
+        resume.contact.email = cleanUndefined(formEmail);
 
         var formPhone = $("#contactForm div.phone input").first.val;
-        resume.contact.phone = (typeof formPhone === "undefined") ? "" : formPhone;
+        resume.contact.phone = cleanUndefined(formPhone);
 
         var formLocation = $("#contactForm div.location input").first.val;
-        resume.contact.location = (typeof formLocation === "undefined") ? "" : formLocation;
+        resume.contact.location = cleanUndefined(formLocation);
 
         return false;
     });    
@@ -66,31 +66,15 @@ function loadEducation(resumeObject){
 
 function loadExperience(resumeObject){
     $('#experienceForms fieldset.experienceForm').remove();
-    var proexperiences = resumeObject.experiences['Professional Experience'];
-    for (var i = 0, ex; ex = proexperiences[i]; i++){
-        addExperience(ex, 'Professional Experience');
-    }
 
-    var openexperiences = resumeObject.experiences['Open Source'];
-    for (var i = 0, ex; ex = openexperiences[i]; i++){
-        addExperience(ex, 'Open Source');
-    }
+    var exs = resumeObject.experiences;
 
-    var resexperiences = resumeObject.experiences['Research and Projects'];
-    for (var i = 0, ex; ex = resexperiences[i]; i++){
-        addExperience(ex, 'Research and Projects');
+    for (var exname in exs){
+        var ex = exs[exname];
+        for (var i = 0, e; e = ex[i];i++){
+            addExperience(e,exname)
+        }
     }
-
-    var honexperiences = resumeObject.experiences['Awards and Honors'];
-    for (var i = 0, ex; ex = honexperiences[i]; i++){
-        addExperience(ex, 'Awards and Honors');
-    }
-
-    var tchexperiences = resumeObject.experiences['Teaching and Service'];
-    for (var i = 0, ex; ex = tchexperiences[i]; i++){
-        addExperience(ex, 'Teaching and Service');
-    }
-
 }
 
 function loadResume(resumeId){
