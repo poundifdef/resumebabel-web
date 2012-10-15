@@ -2,8 +2,8 @@
 
 <form class="form-horizontal">
 	<div id="objectiveInfo">
-		<div id="legend" class="">
-			<legend class="">Objective</legend>
+		<div class="legend">
+			<legend class=""><h3>Objective</h3></legend>
 		</div>
 		<div class="control-group">
 			<div class="controls">
@@ -14,8 +14,8 @@
 		</div>
 	</div>
 	<div id="contactInfo">
-		<div id="legend" class="">
-			<legend class="">Contact</legend>
+		<div class="legend">
+			<legend class=""><h3>Contact</h3></legend>
 		</div>
 		<fieldset id="contactForm">
 			<div class="control-group">
@@ -50,7 +50,7 @@
 
 	<div id="educationInfo">
 		<div id="legend" class="">
-			<legend class="">Education</legend>
+			<legend class=""><h3>Education</h3></legend>
 		</div>
 		<div id="educationForms">
 			<fieldset class="educationForm well">
@@ -97,67 +97,76 @@
 
 	<div id='experienceInfo'>
 		<div id="legend" class="">
-			<legend class="">Experience</legend>
+			<legend class=""><h3>Experience</h3></legend>
 		</div>
-		<div id='experienceForms'>
-			<fieldset class='experienceForm well'>		      
-				<div class="control-group">
-					<label class="control-label">Type</label>
-					<div class="controls type">
-						<select class="input-xlarge">
-							<option>Professional</option>
-							<option>Open Source</option>
-							<option>Research and Projects</option>
-							<option>Awards and Honors</option>
-							<option>Teaching and Service</option>
-						</select>
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="input01">Name</label>
-					<div class="controls name">
-						<input type="text" id="input01" placeholder="" class="input-xlarge">
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="input01">Location</label>
-					<div class="controls location">
-						<input type="text" id="input01" placeholder="" class="input-xlarge">
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="input01">Title</label>
-					<div class="controls title">
-						<input type="text" id="input01" placeholder="" class="input-xlarge">
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label" for="input01">Date</label>
-					<div class="controls date">
-						<input type="text" id="input01" placeholder="" class="input-xlarge">
-					</div>
-				</div>
-
-				<div class="control-group">
-					<label class="control-label">Description</label>
-					<div class="controls description">
-						<div class="textarea">
-							<textarea type="" class=""> </textarea>
+		<div id='experienceTypes'>
+			<div class='experienceType'>
+				<h4 class='typeName'>Old Type</h4>
+				<div id='experienceForms'>
+					<fieldset class='experienceForm well'>		      
+						<div class="control-group">
+							<label class="control-label">Type</label>
+							<div class="controls type">
+								<select class="input-xlarge">
+									<option>Professional</option>
+									<option>Open Source</option>
+									<option>Research and Projects</option>
+									<option>Awards and Honors</option>
+									<option>Teaching and Service</option>
+								</select>
+							</div>
 						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Name</label>
+							<div class="controls name">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Location</label>
+							<div class="controls location">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Title</label>
+							<div class="controls title">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Date</label>
+							<div class="controls date">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">Description</label>
+							<div class="controls description">
+								<div class="textarea">
+									<textarea type="" class=""> </textarea>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>			
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-success addExperience">Add Experience</button>
 					</div>
 				</div>
-			</fieldset>
-		</div>
-		
+			</div>
+		</div>		
 		<div class="control-group">
 			<div class="controls">
-				<button class="btn btn-success addExperience">Add Experience</button>
+				<button class="btn btn-success addExpType">Add Experience Type</button>
 			</div>
-		</div>
+		</div>	
 	</div>
 
 	<button class="btn btn-primary saveResume">Save Resume</button>

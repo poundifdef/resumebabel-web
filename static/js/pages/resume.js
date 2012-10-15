@@ -1,16 +1,26 @@
 $(document).ready(function(){
     
-    $("button.addEducation").click(function() {
+    $("button.addEducation").click(function(e) {
+        e.preventDefault();
         addEducation();
-        return false;
     });
 
-    $("button.addExperience").click(function() {
+    $("button.addExperience").live('click',function(e) {
+        e.preventDefault();
         addExperience();
-        return false;
     });
 
-    $("button.saveResume").click(function(){
+    $("button.addExpType").click(function(e) {
+        e.preventDefault();
+        bootbox.prompt("Type name", "Cancel", "OK", function(result) {
+            if (result) {
+                addExpType(result);
+            }        
+        });
+    });
+
+    $("button.saveResume").click(function(e){
+        e.preventDefault();
         resume.objective = cleanUndefined($("div.objective textarea").val);
 
         var formName = $("#contactForm div.name input").first.val;
@@ -24,8 +34,6 @@ $(document).ready(function(){
 
         var formLocation = $("#contactForm div.location input").first.val;
         resume.contact.location = cleanUndefined(formLocation);
-
-        return false;
     });    
 });
 
@@ -33,6 +41,7 @@ var resume = new Object();
 var resumeId;
 var educationTemplate = $('#educationForms .educationForm:first').clone();
 var experienceTemplate = $('#experienceForms .experienceForm:first').clone();
+var expTypeTemplate = $('#experienceTypes .experienceType:first').clone();
 
 function cleanUndefined(item){
     return (typeof item === "undefined") ? "" : item;
@@ -65,7 +74,8 @@ function loadEducation(resumeObject){
 }
 
 function loadExperience(resumeObject){
-    $('#experienceForms fieldset.experienceForm').remove();
+    $('#experienceTypes div.experienceType').remove();
+    //$('#experienceForms fieldset.experienceForm').remove();
 
     var exs = resumeObject.experiences;
 
@@ -111,4 +121,13 @@ function addExperience(experienceObject, experienceType){
         newExperienceForm.find('div.description textarea').val(cleanUndefined(experienceObject.description));
     }
     $("#experienceForms").append(newExperienceForm);
+}
+
+function addExpType(experienceType){
+    if(experienceType){        
+        var newExpTypeForm = expTypeTemplate.clone();
+        var resu = newExpTypeForm.find('.typeName');
+        newExpTypeForm.find('.typeName').text(experienceType);
+        $("#experienceTypes").append(newExpTypeForm);
+    }
 }
