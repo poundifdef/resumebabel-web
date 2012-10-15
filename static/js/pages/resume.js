@@ -1,14 +1,12 @@
 $(document).ready(function(){
     
     $("button.addEducation").click(function() {
-        var newEducationForm = educationTemplate.clone();
-        $("#educationForms").append(newEducationForm);
+        addEducation();
         return false;
     });
 
     $("button.addExperience").click(function() {
-        var newExperienceForm = experienceTemplate.clone();
-        $("#experienceForms").append(newExperienceForm);
+        addExperience();
         return false;
     });
 
@@ -36,22 +34,25 @@ var resumeId;
 var educationTemplate = $('#educationForms .educationForm:first').clone();
 var experienceTemplate = $('#experienceForms .experienceForm:first').clone();
 
+function cleanUndefined(item){
+    return (typeof item === "undefined") ? "" : item;
+}
+
 function loadObjective(resumeObject){
-    var objectiveToLoad = String(resumeObject.objective);
-    $("div.objective textarea").val(objectiveToLoad);
+    $("div.objective textarea").val(cleanUndefined(resumeObject.objective));
 }
 
 function loadContact(resumeObject){
-    var nameToLoad = String(resumeObject.contact.name);
+    var nameToLoad = cleanUndefined(resumeObject.contact.name);
     $("#contactForm div.name input").val(nameToLoad);
 
-    var emailToLoad = String(resumeObject.contact.email);
+    var emailToLoad = cleanUndefined(resumeObject.contact.email);
     $("#contactForm div.email input").val(emailToLoad);
 
-    var phoneToLoad = String(resumeObject.contact.phone);
+    var phoneToLoad = cleanUndefined(resumeObject.contact.phone);
     $("#contactForm div.phone input").val(phoneToLoad);
 
-    var locationToLoad = String(resumeObject.contact.location);
+    var locationToLoad = cleanUndefined(resumeObject.contact.location);
     $("#contactForm div.location input").val(locationToLoad);
 }
 
@@ -104,20 +105,24 @@ function loadResume(resumeId){
 
 function addEducation(educationObject){
     var newEducationForm = educationTemplate.clone();
-    newEducationForm.find('div.name input').val(educationObject.name);
-    newEducationForm.find('div.date input').val(educationObject.date);
-    newEducationForm.find('div.degree input').val(educationObject.degree);
-    newEducationForm.find('div.description textarea').val(educationObject.description);
+    if(educationObject){        
+        newEducationForm.find('div.name input').val(cleanUndefined(educationObject.name));
+        newEducationForm.find('div.date input').val(cleanUndefined(educationObject.date));
+        newEducationForm.find('div.degree input').val(cleanUndefined(educationObject.degree));
+        newEducationForm.find('div.description textarea').val(cleanUndefined(educationObject.description));
+    }
     $("#educationForms").append(newEducationForm);
 }
 
 function addExperience(experienceObject, experienceType){
     var newExperienceForm = experienceTemplate.clone();
-    newExperienceForm.find('div.type select').val(experienceType);
-    newExperienceForm.find('div.name input').val(experienceObject.name);
-    newExperienceForm.find('div.location input').val(experienceObject.location);
-    newExperienceForm.find('div.title input').val(experienceObject.title);
-    newExperienceForm.find('div.date input').val(experienceObject.date);
-    newExperienceForm.find('div.description textarea').val(experienceObject.description);
+    if(experienceObject && experienceType){        
+        newExperienceForm.find('div.type select').val(cleanUndefined(experienceType));
+        newExperienceForm.find('div.name input').val(cleanUndefined(experienceObject.name));
+        newExperienceForm.find('div.location input').val(cleanUndefined(experienceObject.location));
+        newExperienceForm.find('div.title input').val(cleanUndefined(experienceObject.title));
+        newExperienceForm.find('div.date input').val(cleanUndefined(experienceObject.date));
+        newExperienceForm.find('div.description textarea').val(cleanUndefined(experienceObject.description));
+    }
     $("#experienceForms").append(newExperienceForm);
 }
