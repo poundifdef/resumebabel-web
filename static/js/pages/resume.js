@@ -23,30 +23,29 @@ $(document).ready(function(){
 
     $("button.saveResume").click(function(e){
         e.preventDefault();
-        resume.objective = cleanUndefined($("div.objective textarea").val);
-
-        var formName = $("#contactForm div.name input").first.val;
-        resume.contact.name = cleanUndefined(formName);
-
-        var formEmail = $("#contactForm div.email input").first.val;
-        resume.contact.email = cleanUndefined(formEmail);
-
-        var formPhone = $("#contactForm div.phone input").first.val;
-        resume.contact.phone = cleanUndefined(formPhone);
-
-        var formLocation = $("#contactForm div.location input").first.val;
-        resume.contact.location = cleanUndefined(formLocation);
+        saveResume(RESUMEIDNUM);
     });    
 });
 
 var resume = new Object();
-var resumeId;
+var RESUMEIDNUM;
 var educationTemplate = $('#educationForms .educationForm:first').clone();
 var experienceTemplate = $('#experienceForms .experienceForm:first').clone();
 var expTypeTemplate = $('#experienceTypes .experienceType:first').clone();
 
 function cleanUndefined(item){
     return (typeof item === "undefined") ? "" : item;
+}
+
+function loadResume(resumeId){
+    RESUMEIDNUM = resumeId;
+    $.get("/resumes/" + String(resumeId) + "/resume.json", function(data){
+        resume = (typeof data == "string") ? jQuery.parseJSON(data) : data;
+        loadObjective(resume);
+        loadContact(resume);
+        loadEducation(resume);
+        loadExperiences(resume);
+    });
 }
 
 function loadObjective(resumeObject){
@@ -75,7 +74,7 @@ function loadEducation(resumeObject){
     }
 }
 
-function loadExperience(resumeObject){
+function loadExperiences(resumeObject){
     $('#experienceTypes div.experienceType').remove();
     //$('#experienceForms fieldset.experienceForm').remove();
 
@@ -91,16 +90,6 @@ function loadExperience(resumeObject){
     }
 }
 
-function loadResume(resumeId){
-    $.get("/resumes/" + String(resumeId) + "/resume.json", function(data){
-        resume = (typeof data == "string") ? jQuery.parseJSON(data) : data;
-        loadObjective(resume);
-        loadContact(resume);
-        loadEducation(resume);
-        loadExperience(resume);
-    });
-}
-
 function addEducation(educationObject){
     var newEducationForm = educationTemplate.clone();
     if(educationObject){        
@@ -110,6 +99,15 @@ function addEducation(educationObject){
         newEducationForm.find('div.description textarea').val(cleanUndefined(educationObject.description));
     }
     $("#educationForms").append(newEducationForm);
+}
+
+function addExpType(experienceType){
+    if(experienceType){        
+        var newExpTypeForm = expTypeTemplate.clone();
+        newExpTypeForm.find('.experienceForm').remove();
+        newExpTypeForm.find('.typeName').text(experienceType);
+        $("#experienceTypes").append(newExpTypeForm);
+    }
 }
 
 function addExperience(experienceType, experienceObject){
@@ -133,11 +131,91 @@ function addExperience(experienceType, experienceObject){
     expTypeNode.parent().find("#experienceForms").append(newExperienceForm);
 }
 
-function addExpType(experienceType){
-    if(experienceType){        
-        var newExpTypeForm = expTypeTemplate.clone();
-        newExpTypeForm.find('.experienceForm').remove();
-        newExpTypeForm.find('.typeName').text(experienceType);
-        $("#experienceTypes").append(newExpTypeForm);
-    }
+function saveResume(resumeId){
+    saveObjective();
+    saveContact();    
+    saveEducation();
+    saveExperiences();
+
+    $.post("/resumes/" + String(resumeId) + "/?api=1", resume, function(data){
+        var box = bootbox.alert("Resume Saved");
+        setTimeout(function() {
+            box.modal('hide');
+        }, 2000);
+    });
+}
+
+function saveObjective(){
+    resume.objective = cleanUndefined($("div.objective textarea").val());
+}
+
+function saveContact(){
+    var formName = $("#contactForm div.name input").val();
+    resume.contact.name = cleanUndefined(formName);
+
+    var formEmail = $("#contactForm div.email input").val();
+    resume.contact.email = cleanUndefined(formEmail);
+
+    var formPhone = $("#contactForm div.phone input").val();
+    resume.contact.phone = cleanUndefined(formPhone);
+
+    var formLocation = $("#contactForm div.location input").val();
+    resume.contact.location = cleanUndefined(formLocation);
+}
+
+function saveEducation(){
+    var edList = [];
+    $("#educationForms .educationForm").each(function(index){
+        var ed = new Object();
+
+        var formName = $(this).find("div.name input").val();
+        ed.name = cleanUndefined(formName);
+
+        var formDate = $(this).find("div.date input").val();
+        ed.date = cleanUndefined(formDate);
+
+        var formDegree = $(this).find("div.degree input").val();
+        ed.degree = cleanUndefined(formDegree);
+
+        var formDescription = $(this).find("div.description textarea").val();
+        ed.description = cleanUndefined(formDescription);
+
+        edList.push(ed);
+    });
+
+    resume.education = edList;
+}
+
+function saveExperiences(){
+    var exTypeList = [];
+
+    $("#experienceTypes .experienceType").each(function(index){
+        var exList = [];
+        var exTypeName = $(this).find('.typeName').text();
+
+        $(this).find("#experienceForms .experienceForm").each(function(index){
+            var ex = new Object();
+
+            var formName = $(this).find("div.name input").val();
+            ex.name = cleanUndefined(formName);
+
+            var formDate = $(this).find("div.date input").val();
+            ex.date = cleanUndefined(formDate);
+
+            var formLocation = $(this).find("div.location input").val();
+            ex.location = cleanUndefined(formLocation);
+
+            var formTitle = $(this).find("div.title input").val();
+            ex.title = cleanUndefined(formTitle);
+
+            var formDescription = $(this).find("div.description textarea").val();
+            ex.description = cleanUndefined(formDescription);
+
+            exList.push(ex);
+        });
+
+        exTypeList[exTypeName] = exList;
+    });
+
+    resume.experiences = exTypeList;
 }
