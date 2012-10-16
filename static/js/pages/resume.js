@@ -139,10 +139,12 @@ function saveResume(resumeId){
     saveEducation();
     saveExperiences();
 
+    var resumeJSON = JSON.stringify(RESUME);
+
     $.ajax({
           type: "POST",
           url: "/resumes/" + String(resumeId) + "/?api=1",
-          data: { resume: JSON.stringify(RESUME) }
+          data: { resume: resumeJSON}
     }).done(function( data ) {
         if('OK' == data['response']) {            
             var box = bootbox.alert("Resume Saved");
@@ -199,7 +201,7 @@ function saveEducation(){
 }
 
 function saveExperiences(){
-    var exTypeList = [];
+    var exTypeList = new Object();
 
     $("#experienceTypes .experienceType").each(function(index){
         var exList = [];
