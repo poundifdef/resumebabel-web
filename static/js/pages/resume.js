@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    bootbox.animate(false);
     
     $("button.addEducation").click(function(e) {
         e.preventDefault();
@@ -14,7 +15,8 @@ $(document).ready(function(){
 
     $("button.addExpType").click(function(e) {
         e.preventDefault();
-        bootbox.prompt("Type name", "Cancel", "OK", function(result) {
+
+        bootbox.prompt("Enter a new experience type name:", "Cancel", "OK", function(result) {
             if (result) {
                 addExpType(result);
             }        
@@ -27,7 +29,7 @@ $(document).ready(function(){
     });    
 });
 
-var resume = new Object();
+var RESUME = new Object();
 var RESUMEIDNUM;
 var educationTemplate = $('#educationForms .educationForm:first').clone();
 var experienceTemplate = $('#experienceForms .experienceForm:first').clone();
@@ -40,11 +42,11 @@ function cleanUndefined(item){
 function loadResume(resumeId){
     RESUMEIDNUM = resumeId;
     $.get("/resumes/" + String(resumeId) + "/resume.json", function(data){
-        resume = (typeof data == "string") ? jQuery.parseJSON(data) : data;
-        loadObjective(resume);
-        loadContact(resume);
-        loadEducation(resume);
-        loadExperiences(resume);
+        RESUME = (typeof data == "string") ? jQuery.parseJSON(data) : data;
+        loadObjective(RESUME);
+        loadContact(RESUME);
+        loadEducation(RESUME);
+        loadExperiences(RESUME);
     });
 }
 
@@ -137,30 +139,40 @@ function saveResume(resumeId){
     saveEducation();
     saveExperiences();
 
-    $.post("/resumes/" + String(resumeId) + "/?api=1", resume, function(data){
-        var box = bootbox.alert("Resume Saved");
-        setTimeout(function() {
-            box.modal('hide');
-        }, 2000);
+    $.ajax({
+          type: "POST",
+          url: "/resumes/" + String(resumeId) + "/?api=1",
+          data: { resume: JSON.stringify(RESUME) }
+    }).done(function( data ) {
+        if('OK' == data['response']) {            
+            var box = bootbox.alert("Resume Saved");
+            setTimeout(function() {
+                box.modal('hide');
+            }, 2000);
+        }
+        else {
+            var errors = data['error'];
+            var box = bootbox.alert(String(errors));
+        }
     });
 }
 
 function saveObjective(){
-    resume.objective = cleanUndefined($("div.objective textarea").val());
+    RESUME.objective = cleanUndefined($("div.objective textarea").val());
 }
 
 function saveContact(){
     var formName = $("#contactForm div.name input").val();
-    resume.contact.name = cleanUndefined(formName);
+    RESUME.contact.name = cleanUndefined(formName);
 
     var formEmail = $("#contactForm div.email input").val();
-    resume.contact.email = cleanUndefined(formEmail);
+    RESUME.contact.email = cleanUndefined(formEmail);
 
     var formPhone = $("#contactForm div.phone input").val();
-    resume.contact.phone = cleanUndefined(formPhone);
+    RESUME.contact.phone = cleanUndefined(formPhone);
 
     var formLocation = $("#contactForm div.location input").val();
-    resume.contact.location = cleanUndefined(formLocation);
+    RESUME.contact.location = cleanUndefined(formLocation);
 }
 
 function saveEducation(){
@@ -183,7 +195,7 @@ function saveEducation(){
         edList.push(ed);
     });
 
-    resume.education = edList;
+    RESUME.education = edList;
 }
 
 function saveExperiences(){
@@ -217,5 +229,5 @@ function saveExperiences(){
         exTypeList[exTypeName] = exList;
     });
 
-    resume.experiences = exTypeList;
+    RESUME.experiences = exTypeList;
 }
