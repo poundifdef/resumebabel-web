@@ -7,7 +7,9 @@ $(document).ready(function(){
 
     $("button.addExperience").live('click',function(e) {
         e.preventDefault();
-        addExperience();
+
+        var expType = $(this).parent().parent().parent().find('.typeName').text();
+        addExperience(expType);
     });
 
     $("button.addExpType").click(function(e) {
@@ -83,7 +85,7 @@ function loadExperience(resumeObject){
         if(exs.hasOwnProperty(exname)){            
             var ex = exs[exname];
             for (var i = 0, e; e = ex[i];i++){
-                addExperience(e,exname)
+                addExperience(exname,e);
             }
         }
     }
@@ -110,9 +112,10 @@ function addEducation(educationObject){
     $("#educationForms").append(newEducationForm);
 }
 
-function addExperience(experienceObject, experienceType){
+function addExperience(experienceType, experienceObject){
     var newExperienceForm = experienceTemplate.clone();
-    if(experienceObject && experienceType){        
+             
+    if(experienceObject){   
         newExperienceForm.find('div.type select').val(cleanUndefined(experienceType));
         newExperienceForm.find('div.name input').val(cleanUndefined(experienceObject.name));
         newExperienceForm.find('div.location input').val(cleanUndefined(experienceObject.location));
@@ -120,13 +123,20 @@ function addExperience(experienceObject, experienceType){
         newExperienceForm.find('div.date input').val(cleanUndefined(experienceObject.date));
         newExperienceForm.find('div.description textarea').val(cleanUndefined(experienceObject.description));
     }
-    $("#experienceForms").append(newExperienceForm);
+    var expTypeNode = $("#experienceInfo .typeName:contains('" + experienceType + "')");
+
+    if(!(expTypeNode.length)){
+        addExpType(experienceType);
+        expTypeNode = $("#experienceInfo .typeName:contains('" + experienceType + "')");
+    }
+
+    expTypeNode.parent().find("#experienceForms").append(newExperienceForm);
 }
 
 function addExpType(experienceType){
     if(experienceType){        
         var newExpTypeForm = expTypeTemplate.clone();
-        var resu = newExpTypeForm.find('.typeName');
+        newExpTypeForm.find('.experienceForm').remove();
         newExpTypeForm.find('.typeName').text(experienceType);
         $("#experienceTypes").append(newExpTypeForm);
     }
