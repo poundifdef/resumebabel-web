@@ -1,12 +1,166 @@
 {% include 'header.html' %}
 
-<p>This is the screen where you edit the resume.</p>
+<form class="form-horizontal">
+	<div id="objectiveInfo">
+		<div class="legend">
+			<legend class=""><h3>Objective</h3></legend>
+		</div>
+		<div class="control-group">
+			<div class="controls">
+				<div class="textarea objective">
+					<textarea type="" class=""> </textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="contactInfo">
+		<div class="legend">
+			<legend class=""><h3>Contact</h3></legend>
+		</div>
+		<fieldset id="contactForm">
+			<div class="control-group">
+				<label class="control-label" for="input01">Name</label>
+				<div class="controls name">
+					<input type="text" id="input01" placeholder="" class="input-xlarge">
+				</div>
+			</div>
 
-<p>This form POSTs the new resume contents. (It doesn't actually save; this is for testing the ajax call.)</p>
-<form method="post" action="{{request.path}}?api=1">
-    <textarea rows="10" name="resume">{"foo": "bar"}</textarea>
-    <br>
-    <input type="submit" value="save resume">
+			<div class="control-group">
+				<label class="control-label" for="input02">Email</label>
+				<div class="controls email">
+					<input type="text" id="input02" placeholder="" class="input-xlarge">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="input03">Phone</label>
+				<div class="controls phone">
+					<input type="text" id="input03" placeholder="" class="input-xlarge">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="input04">Location</label>
+				<div class="controls location">
+					<input type="text" id="input04" placeholder="" class="input-xlarge">
+				</div>
+			</div>
+		</fieldset>
+	</div>
+
+	<div id="educationInfo">
+		<div id="legend" class="">
+			<legend class=""><h3>Education</h3></legend>
+		</div>
+		<div id="educationForms">
+			<fieldset class="educationForm well">
+				<a class="removeEducation"><i class="icon-trash"></i></a>
+				<div class="control-group">
+					<label class="control-label" for="input05">Name</label>
+					<div class="controls name">
+						<input type="text" id="input05" placeholder="" class="input-xlarge">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="input06">Date</label>
+					<div class="controls date">
+						<input type="text" id="input06" placeholder="" class="input-xlarge">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label" for="input07">Degree</label>
+					<div class="controls degree">
+						<input type="text" id="input07" placeholder="" class="input-xlarge">
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">Description</label>
+					<div class="controls">
+						<div class="textarea description">
+							<textarea type="" class=""> </textarea>
+						</div>
+					</div>
+				</div>       
+			</fieldset>        
+		</div>
+		<div class="control-group">
+			<label class="control-label"></label>
+
+			<!-- Button -->
+			<div class="controls">
+				<button class="btn btn-success addEducation">Add Education</button>
+			</div>
+		</div>
+	</div>
+
+	<div id='experienceInfo'>
+		<div id="legend" class="">
+			<legend class=""><h3>Experience</h3></legend>
+		</div>
+		<div id='experienceTypes'>
+			<div class='experienceType'>
+				<h4 class='typeName'>Old Type</h4>
+				<a class="editExperienceType"><i class="icon-pencil"></i></a>
+				<a class="removeExperienceType"><i class="icon-trash"></i></a>
+				<div id='experienceForms'>
+					<fieldset class='experienceForm well'>
+						<a class="removeExperience"><i class="icon-trash"></i></a>
+						<div class="control-group">
+							<label class="control-label" for="input01">Name</label>
+							<div class="controls name">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Location</label>
+							<div class="controls location">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Title</label>
+							<div class="controls title">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="input01">Date</label>
+							<div class="controls date">
+								<input type="text" id="input01" placeholder="" class="input-xlarge">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">Description</label>
+							<div class="controls description">
+								<div class="textarea">
+									<textarea type="" class=""> </textarea>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>			
+				<div class="control-group">
+					<div class="controls">
+						<button class="btn btn-info addExperience">Add Experience</button>
+					</div>
+				</div>
+			</div>
+		</div>		
+		<div class="control-group">
+			<div class="controls">
+				<button class="btn btn-success addExpType">Add Experience Type</button>
+			</div>
+		</div>	
+	</div>
+
+	<button class="btn btn-primary saveResume">Save Resume</button>
 </form>
 
 {% include 'footer.html' %}
