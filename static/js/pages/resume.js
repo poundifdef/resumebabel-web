@@ -26,7 +26,82 @@ $(document).ready(function(){
     $("button.saveResume").click(function(e){
         e.preventDefault();
         saveResume(RESUMEIDNUM);
-    });    
+    });
+
+    $("a.removeEducation").live('click',function(e){
+        e.preventDefault();
+
+        var ed = $(this).parent();
+
+        bootbox.dialog("Are you sure you want to remove this education?",
+            [
+            {
+                "label" : "Remove Education",
+                "class" : "btn-danger",
+                "callback": function() {
+                    ed.remove();
+                }
+            },
+            {
+                "label" : "Cancel",
+                "class" : "btn"
+            }
+            ]);
+    });
+
+    $("a.removeExperience").live('click',function(e){
+        e.preventDefault();
+
+        var ex = $(this).parent();
+
+        bootbox.dialog("Are you sure you want to remove this experience?",
+            [
+            {
+                "label" : "Remove Experience",
+                "class" : "btn-danger",
+                "callback": function() {
+                    ex.remove();
+                }
+            },
+            {
+                "label" : "Cancel",
+                "class" : "btn"
+            }
+            ]);
+    });
+
+    $("a.removeExperienceType").live('click',function(e){
+        e.preventDefault();
+
+        var exType = $(this).parent();
+
+        bootbox.dialog("Are you sure you want to remove this experience type?",
+            [
+            {
+                "label" : "Remove Experience Type",
+                "class" : "btn-danger",
+                "callback": function() {
+                    exType.remove();
+                }
+            },
+            {
+                "label" : "Cancel",
+                "class" : "btn"
+            }
+            ]);
+    });
+
+    $("a.editExperienceType").live('click',function(e) {
+        e.preventDefault();
+
+        var exType = $(this).parent();
+
+        bootbox.prompt("Enter a new experience type name:", "Cancel", "OK", function(result) {
+            if (result) {
+                exType.find('.typeName').text(String(result));
+            }        
+        });
+    });
 });
 
 var RESUME = new Object();
@@ -78,7 +153,6 @@ function loadEducation(resumeObject){
 
 function loadExperiences(resumeObject){
     $('#experienceTypes div.experienceType').remove();
-    //$('#experienceForms fieldset.experienceForm').remove();
 
     var exs = resumeObject.experiences;
 
