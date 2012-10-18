@@ -26,7 +26,6 @@ from resumebabel.resumebabel import ResumeBabel
 
 db.init_app(app)
 
-
 login_manager = LoginManager()
 login_manager.setup_app(app)
 login_manager.login_view = "login"
@@ -34,10 +33,9 @@ login_manager.login_message = None
 
 
 def render_template(*args, **kwargs):
+    """Wrap template rendering to change navigation dependong on auth"""
     nav = [
         ('/', 'Home'),
-        ('#', 'Samples'),
-        ('#', 'FAQ'),
     ]
 
     if current_user.is_authenticated():
@@ -51,26 +49,22 @@ def render_template(*args, **kwargs):
 
 @login_manager.user_loader
 def load_user(id):
+    """Return user object correspondign to logged-in user"""
     return User.query.filter_by(id=id).first()
 
 
 @app.route("/")
 def index():
+    """Home page. Landing page! Get them to sing up!"""
+
+    # TODO: custom, more useful home page if logged in?
     return render_template('index.html')
-
-
-@app.route("/samples")
-def samples():
-    return ""
-
-
-@app.route("/faq")
-def faq():
-    return ""
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Login page"""
+
     def check_credential(user):
         return user and hashpw(password, user.salt) == user.password
 
