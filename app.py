@@ -65,24 +65,23 @@ def index():
 def login():
     """Login page"""
 
-    def check_credential(user):
-        return user and hashpw(password, user.salt) == user.password
+    def get_user(email, password):
+        """Verify login and return user object if valid"""
+        user = User.query.filter_by(email=email).first()
+        if user and hashpw(password, user.salt) == user.password:
+            return user
 
     if current_user.is_authenticated():
         return redirect(url_for("resumes"))
 
     form = LoginForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password.data
-        user = User.query.filter_by(email=email).first()
-
-        if check_credential(user):
+    if form.validate_on_submit():  # shorthand for "if POST and form is valid"
+        user = get_user(form.email.data, form.password.data)
+        if user:
             login_user(user)
             return redirect(url_for("resumes"))
         else:
             flash('Invalid Login')
-            return render_template('login.html', form=form)
 
     return render_template('login.html', form=form)
 
@@ -90,6 +89,7 @@ def login():
 @app.route("/logout")
 @login_required
 def logout():
+    """Logs user out!"""
     logout_user()
     return redirect(url_for("login"))
 
@@ -97,14 +97,29 @@ def logout():
 @app.route('/resumes/', methods=['GET', 'POST'])
 @login_required
 def resumes():
+    """
+    Resume management. Screen is gateway to perform the following actions:
+
+    1. Create new resume
+    2. Clone existing resume
+    3. Delete resume
+    4. Rename resume
+    5. Download resume in a specific format (eg, html or txt)
+    """
+
+    # Create new resume by POSTing to this route
+    # TODO: abstract this if-statement into post(), get() methods
     if request.method == 'POST':
+        # TODO: form validation; whitespace, length, etc
         resume = Resume(request.form['title'], current_user)
         db.session.add(resume)
         db.session.commit()
 
+        # TODO: abstract this "?api=1" functionality. Write api w/ subdomain?
         if request.args.get('api'):
             return jsonify(response='OK')
 
+    # Display all of the user's resumes on this screen
     resumes = Resume.query.filter_by(user=current_user).all()
     return render_template('resumes.html', resumes=resumes, has_js=True,
                            formats=ResumeBabel.get_supported_formats())
@@ -113,10 +128,15 @@ def resumes():
 @app.route('/resumes/<int:resume_id>/', methods=['GET', 'POST'])
 @login_required
 def resume(resume_id):
+    """Edit an individual resume"""
+
+    # TODO: abstract this; maybe a decorator?
     resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
     if not resume:
         abort(404)
 
+    # TODO: we only support POST if "?api=1". Is this necessary?
+    #       abstract exceptions to "flash" message for non-api
     if request.method == 'POST':
         if request.args.get('api'):
             try:
@@ -125,29 +145,30 @@ def resume(resume_id):
 
                 new_resume = json.loads(request.form['resume'])
 
-                # TODO: properly validate json
-                required_fields = {'contact': {}, 'education': [],
+                # TODO: (more?) properly validate json
+                required_fields = {'contact': {},
+                                   'education': [],
                                    'experiences': {}}
                 for field, field_type in required_fields.iteritems():
                     value = new_resume.get(field, None)
-                    if value is None:
-                        raise Exception('Resume must have these fields: ' +
-                                        str(required_fields))
-                    if type(value) != type(field_type):
+                    if value is None or type(value) != type(field_type):
                         raise Exception('Resume must have these fields: ' +
                                         str(required_fields))
 
+                # Delete the user's existing resumes
                 # TODO: this is repeated code. refactor.
                 to_delete = glob.glob(
                     '%s/%d.*' %
                     (app.config['RESUME_FOLDER'], resume_id))
-
                 for filename in to_delete:
                     os.unlink(filename)
 
+                # Then save the new resume json
+                # TODO: abstract this resume/file creation bit
                 resume_name = '%d.json' % (resume_id)
-                resume_path = os.path.join(app.config['RESUME_FOLDER'],
-                                           resume_name)
+                resume_path = os.path.join(
+                    app.config['RESUME_FOLDER'],
+                    resume_name)
                 fd = open(resume_path, 'w')
                 fd.write(request.form['resume'])
                 fd.close()
@@ -163,11 +184,14 @@ def resume(resume_id):
 @app.route('/resumes/<int:resume_id>/resume.<string:file_format>')
 @login_required
 def download_resume(resume_id, file_format):
+    """Download resume in prescribed format"""
 
+    # TODO: abstract this; maybe a decorator?
     resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
     if not resume or file_format not in ResumeBabel.get_supported_formats():
         abort(404)
 
+    # Abstract resume file operations. Maybe attach to resume object
     resume_name = '%d.json' % (resume_id)
     resume_path = os.path.join(app.config['RESUME_FOLDER'], resume_name)
 
@@ -198,6 +222,7 @@ def download_resume(resume_id, file_format):
 @app.route('/resumes/delete/<int:resume_id>/', methods=['POST'])
 @login_required
 def delete_resume(resume_id):
+    # Abstract this into decorator
     resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
     if not resume:
         abort(404)
@@ -205,6 +230,7 @@ def delete_resume(resume_id):
     db.session.delete(resume)
     db.session.commit()
 
+    # abstract abstract abstract
     to_delete = glob.glob(app.config['RESUME_FOLDER'] + '/%d.*' % (resume_id))
     for filename in to_delete:
         os.unlink(filename)
