@@ -18,11 +18,15 @@
             </td>
             <td>
                 <div class="btn-group">
-                    {% for fmt in formats %}
-                    <a href="/resumes/{{resume.id}}/resume.{{fmt}}" class="btn btn-small clone_resume">.{{fmt}}</a>
-                    {% endfor %}
+                  <a class="btn btn-small" href="#">Download...</a>
+                  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                        {% for fmt in formats %}
+                        <li><a href="/resumes/{{resume.id}}/resume.{{fmt}}?download=1">.{{fmt}}</a></li>
+                        {% endfor %}
+                  </ul>
                 </div>
-            </td>
+                </td>
             <td>
                 <div class="btn-group">
                     <a href="#" data-clone-id="{{resume.id}}" class="btn btn-small clone_resume">Clone</a>
