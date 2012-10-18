@@ -134,6 +134,11 @@ def resume(resume_id):
                         raise Exception('Resume must have these fields: ' + str(required_fields))
 
 
+                # TODO: this is repeated code. refactor.
+                to_delete = glob.glob(app.config['RESUME_FOLDER'] + '/%d.*' % (resume_id))
+                for filename in to_delete:
+                    os.unlink(filename)
+
                 resume_name = '%d.json' % (resume_id)
                 resume_path = os.path.join(app.config['RESUME_FOLDER'], resume_name)
                 fd = open(resume_path, 'w')
@@ -179,7 +184,7 @@ def download_resume(resume_id, file_format):
     # TODO: mimetype='application/json' ????
     return send_from_directory(app.config['RESUME_FOLDER'],
                                file_name, attachment_filename=('resume.' + file_format),
-                               cache_timeout=60, as_attachment=as_attachment)
+                               cache_timeout=0, as_attachment=as_attachment)
 
 
 @app.route('/resumes/<int:resume_id>/resume.<string:file_format>')

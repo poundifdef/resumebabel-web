@@ -2,5 +2,7 @@ git
 python-pip
 python-virtualenv
 nginx
-uwsgi
 uwsgi-plugin-python
+build-essential
+supervisor
+python-dev
