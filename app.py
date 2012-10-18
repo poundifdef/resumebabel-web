@@ -1,18 +1,21 @@
-from bcrypt import hashpw
-from flask import (abort, flash, Flask, jsonify,
-                   render_template as flask_render_template, request,
-                   send_from_directory, url_for)
-from flask.ext.login import (current_user, login_required, login_user,
-                             logout_user, LoginManager, redirect)
-from models import db, User, Resume
-from forms import LoginForm, RegistrationForm
-
+import glob
 import json
 import mail
 import os
-import sys
-import glob
 import shutil
+import sys
+
+from bcrypt import hashpw
+from flask import (
+    abort, flash, Flask, jsonify, render_template as flask_render_template,
+    request, send_from_directory, url_for
+)
+from flask.ext.login import (
+    current_user, login_required, login_user, logout_user, LoginManager,
+    redirect
+)
+from forms import LoginForm, RegistrationForm
+from models import db, User, Resume
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
