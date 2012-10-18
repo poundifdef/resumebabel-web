@@ -4,10 +4,11 @@ from flask import (abort, flash, Flask, jsonify,
                    send_from_directory, url_for)
 from flask.ext.login import (current_user, login_required, login_user,
                              logout_user, LoginManager, redirect)
-import json
-import mail
 from models import db, User, Resume
 from forms import LoginForm, RegistrationForm
+
+import json
+import mail
 import os
 import sys
 import glob
@@ -18,6 +19,7 @@ app.config.from_object('config.Config')
 
 sys.path.append(app.config['RESUMEBABEL'])
 
+from resumebabel.resumebabel import ResumeBabel 
 
 db.init_app(app)
 
@@ -107,7 +109,8 @@ def resumes():
             return jsonify(response='OK')
 
     resumes = Resume.query.filter_by(user=current_user).all()
-    return render_template('resumes.html', resumes=resumes, has_js=True)
+    return render_template('resumes.html', resumes=resumes, has_js=True,
+                           formats=ResumeBabel.get_supported_formats())
 
 @app.route('/resumes/<int:resume_id>/', methods=['GET', 'POST'])
 @login_required
@@ -149,13 +152,13 @@ def resume(resume_id):
             except Exception as ex:
                 return jsonify(response='Error', error=[str(ex)])
 
-    return render_template('resume.html', has_js=True, get_resume=True)
+    return render_template('resume.html', has_js=True, get_resume=True,
+                           formats=ResumeBabel.get_supported_formats())
 
 
 @app.route('/resumes/<int:resume_id>/resume.<string:file_format>')
 @login_required
 def download_resume(resume_id, file_format):
-    from resumebabel.resumebabel import ResumeBabel 
 
     resume = Resume.query.filter_by(id=resume_id, user=current_user).first()
     if not resume or file_format not in ResumeBabel.get_supported_formats():
@@ -184,7 +187,7 @@ def download_resume(resume_id, file_format):
     # TODO: mimetype='application/json' ????
     return send_from_directory(app.config['RESUME_FOLDER'],
                                file_name, attachment_filename=('resume.' + file_format),
-                               cache_timeout=0, as_attachment=as_attachment)
+                               cache_timeout=1, as_attachment=as_attachment)
 
 
 @app.route('/resumes/<int:resume_id>/resume.<string:file_format>')

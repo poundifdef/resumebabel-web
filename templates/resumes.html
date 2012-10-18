@@ -5,6 +5,7 @@
     <thead>
         <tr>
             <th>Title</th>
+            <th>Download</th>
             <th>Options</th>
         </tr>
     </thead>
@@ -14,6 +15,13 @@
             <td>
                 <a href="/resumes/{{resume.id}}">{{ resume.title }}</a>
                 <a href="#" data-edit-id="{{resume.id}}" data-default-value="{{resume.title}}" class="icon-pencil rename_resume">&nbsp;</a>
+            </td>
+            <td>
+                <div class="btn-group">
+                    {% for fmt in formats %}
+                    <a href="/resumes/{{resume.id}}/resume.{{fmt}}" class="btn btn-small clone_resume">.{{fmt}}</a>
+                    {% endfor %}
+                </div>
             </td>
             <td>
                 <div class="btn-group">
