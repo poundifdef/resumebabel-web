@@ -1,6 +1,6 @@
 {% include 'header.html' %}
 
-<form class="form-horizontal">
+<form class="form-horizontal" ng-controller="ResumeCtrl">
 	<div id="objectiveInfo">
 		<div class="legend">
 			<legend class=""><h3>Objective</h3></legend>
@@ -8,7 +8,7 @@
 		<div class="control-group">
 			<div class="controls">
 				<div class="textarea objective">
-					<textarea type="" class=""> </textarea>
+					<textarea type="" class="" ng-model="objective"></textarea>
 				</div>
 			</div>
 		</div>
@@ -21,28 +21,28 @@
 			<div class="control-group">
 				<label class="control-label" for="input01">Name</label>
 				<div class="controls name">
-					<input type="text" id="input01" placeholder="" class="input-xlarge">
+					<input type="text" id="input01" placeholder="" class="input-xlarge" ng-model="contact.name"></input>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class="control-label" for="input02">Email</label>
 				<div class="controls email">
-					<input type="text" id="input02" placeholder="" class="input-xlarge">
+					<input type="text" id="input02" placeholder="" class="input-xlarge" ng-model="contact.email"></input>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class="control-label" for="input03">Phone</label>
 				<div class="controls phone">
-					<input type="text" id="input03" placeholder="" class="input-xlarge">
+					<input type="text" id="input03" placeholder="" class="input-xlarge" ng-model="contact.phone"></input>
 				</div>
 			</div>
 
 			<div class="control-group">
 				<label class="control-label" for="input04">Location</label>
 				<div class="controls location">
-					<input type="text" id="input04" placeholder="" class="input-xlarge">
+					<input type="text" id="input04" placeholder="" class="input-xlarge" ng-model="contact.location"></input>
 				</div>
 			</div>
 		</fieldset>
@@ -52,27 +52,27 @@
 		<div id="legend" class="">
 			<legend class=""><h3>Education</h3></legend>
 		</div>
-		<div id="educationForms">
+		<div id="educationForms" ng-repeat="ed in education">
 			<fieldset class="educationForm well">
-				<a class="removeEducation"><i class="icon-trash"></i></a>
+				<a class="removeEducation" ng-click="removeEducation(ed)"><i class="icon-trash"></i></a>
 				<div class="control-group">
 					<label class="control-label" for="input05">Name</label>
 					<div class="controls name">
-						<input type="text" id="input05" placeholder="" class="input-xlarge">
+						<input type="text" id="input05" placeholder="" class="input-xlarge" ng-model="ed.name">
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label class="control-label" for="input06">Date</label>
 					<div class="controls date">
-						<input type="text" id="input06" placeholder="" class="input-xlarge">
+						<input type="text" id="input06" placeholder="" class="input-xlarge" ng-model="ed.date">
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label class="control-label" for="input07">Degree</label>
 					<div class="controls degree">
-						<input type="text" id="input07" placeholder="" class="input-xlarge">
+						<input type="text" id="input07" placeholder="" class="input-xlarge" ng-model="ed.degree">
 					</div>
 				</div>
 
@@ -80,7 +80,7 @@
 					<label class="control-label">Description</label>
 					<div class="controls">
 						<div class="textarea description">
-							<textarea type="" class=""> </textarea>
+							<textarea type="" class="" ng-model="ed.description"> </textarea>
 						</div>
 					</div>
 				</div>       
@@ -91,7 +91,7 @@
 
 			<!-- Button -->
 			<div class="controls">
-				<button class="btn btn-success addEducation">Add Education</button>
+				<button class="btn btn-success addEducation" ng-click="addEducation()">Add Education</button>
 			</div>
 		</div>
 	</div>
@@ -100,39 +100,39 @@
 		<div id="legend" class="">
 			<legend class=""><h3>Experience</h3></legend>
 		</div>
-		<div id='experienceTypes'>
+		<div id='experienceTypes' ng-repeat="(type, exs) in experiences">
 			<div class='experienceType'>
-				<h4 class='typeName'>Old Type</h4>
+				<h4 class='typeName' ng-bind-template="{{'{{type}}'}}"></h4>
 				<a class="editExperienceType"><i class="icon-pencil"></i></a>
-				<a class="removeExperienceType"><i class="icon-trash"></i></a>
-				<div id='experienceForms'>
+				<a class="removeExperienceType" ng-click="removeExperienceType(type)"><i class="icon-trash"></i></a>
+				<div id='experienceForms' ng-repeat="experience in exs">
 					<fieldset class='experienceForm well'>
-						<a class="removeExperience"><i class="icon-trash"></i></a>
+						<a class="removeExperience" ng-click="removeExperience(type, experience)"><i class="icon-trash"></i></a>
 						<div class="control-group">
 							<label class="control-label" for="input01">Name</label>
 							<div class="controls name">
-								<input type="text" id="input01" placeholder="" class="input-xlarge">
+								<input type="text" id="input01" placeholder="" class="input-xlarge" ng-model="experience.name">
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label" for="input01">Location</label>
 							<div class="controls location">
-								<input type="text" id="input01" placeholder="" class="input-xlarge">
+								<input type="text" id="input01" placeholder="" class="input-xlarge" ng-model="experience.location">
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label" for="input01">Title</label>
 							<div class="controls title">
-								<input type="text" id="input01" placeholder="" class="input-xlarge">
+								<input type="text" id="input01" placeholder="" class="input-xlarge" ng-model="experience.title">
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label" for="input01">Date</label>
 							<div class="controls date">
-								<input type="text" id="input01" placeholder="" class="input-xlarge">
+								<input type="text" id="input01" placeholder="" class="input-xlarge" ng-model="experience.date">
 							</div>
 						</div>
 
@@ -140,7 +140,7 @@
 							<label class="control-label">Description</label>
 							<div class="controls description">
 								<div class="textarea">
-									<textarea type="" class=""> </textarea>
+									<textarea type="" class="" ng-model="experience.description"> </textarea>
 								</div>
 							</div>
 						</div>
@@ -148,19 +148,19 @@
 				</div>			
 				<div class="control-group">
 					<div class="controls">
-						<button class="btn btn-info addExperience">Add Experience</button>
+						<button class="btn btn-info addExperience" ng-click='addExperience(type)'>Add Experience</button>
 					</div>
 				</div>
 			</div>
 		</div>		
 		<div class="control-group">
 			<div class="controls">
-				<button class="btn btn-success addExpType">Add Experience Type</button>
+				<button class="btn btn-success addExpType" ng-click='addExperienceType()'>Add Experience Type</button>
 			</div>
 		</div>	
 	</div>
 
-	<button class="btn btn-primary saveResume">Save Resume</button>
+	<button class="btn btn-primary saveResume" ng-click='saveResume()'>Save Resume</button>
 </form>
 
 {% include 'footer.html' %}
