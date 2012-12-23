@@ -3,7 +3,17 @@ function loadResume(resumeId){
     RESUMEIDNUM = resumeId;
 }
 
+var offset = 54;
+$('.scroller').click(function(event) {
+    window.location.hash = $(this).attr('href');
+    event.preventDefault();
+    $($(this).attr('href'))[0].scrollIntoView();
+    scrollBy(0, -offset);
+});
+
 function ResumeCtrl($scope, $http) {
+
+
     $http.get('/resumes/' + RESUMEIDNUM + '/resume.json').success(function(data) {
         $scope.resume = data;
         $scope.objective = $scope.resume.objective;
