@@ -18,7 +18,8 @@ function ResumeCtrl($scope, $http) {
           date: '',
           degree: '',
           description: ''
-        });
+        });                 
+        $scope.saveResume();
     }
 
     $scope.removeEducation = function( ed ) {
@@ -31,6 +32,7 @@ function ResumeCtrl($scope, $http) {
                 "callback": function() {
                     $scope.education.splice($scope.education.indexOf(ed), 1);
                     $scope.$apply();
+                    $scope.saveResume();
                 }
             },
             {
@@ -45,7 +47,8 @@ function ResumeCtrl($scope, $http) {
         return bootbox.prompt("Enter a new experience type name:", "Cancel", "OK", function(result) {
             if (result) {
                 $scope.experiences[String(result)] = [];
-                $scope.$apply();
+                $scope.$apply();                 
+                $scope.saveResume();
             }        
         });
     };
@@ -59,7 +62,8 @@ function ResumeCtrl($scope, $http) {
                 "class" : "btn-danger",
                 "callback": function() {
                     delete $scope.experiences[type];
-                    $scope.$apply();
+                    $scope.$apply();                    
+                    $scope.saveResume();
                 }
             },
             {
@@ -77,6 +81,7 @@ function ResumeCtrl($scope, $http) {
           date: '',
           description: ''
         });
+        $scope.saveResume();
     }
 
     $scope.removeExperience = function( type, experience ) {
@@ -88,7 +93,8 @@ function ResumeCtrl($scope, $http) {
                 "class" : "btn-danger",
                 "callback": function() {
                     $scope.experiences[type].splice($scope.experiences[type].indexOf(experience), 1);
-                    $scope.$apply();
+                    $scope.$apply();                                  
+                    $scope.saveResume();
                 }
             },
             {
