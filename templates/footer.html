@@ -12,17 +12,20 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+
     <script src="http://code.jquery.com/jquery.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/json3/3.2.4/json3.min.js"></script>
     <script src="{{url_for('static',filename='js/bootstrap.min.js')}}"></script>
     <script src="{{url_for('static',filename='js/bootbox.min.js')}}"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular.min.js"></script>
 
     {% if has_js %}
     <script src="{{url_for('static',filename='js/pages/' + request.path.split('/')[1]|string + '.js')}}"></script>
     {% endif %}
 
     {% if get_resume %}
-    <script src="{{url_for('static',filename='js/pages/resume.js')}}"></script>
+    <script src="{{url_for('static',filename='js/pages/resume.js')}}"></script>         
+    <link href="{{ url_for('static', filename='css/resume.css') }}" rel="stylesheet">
     <script type="text/javascript">
         loadResume({{request.path.split('/')[2]|string}});
     </script>
