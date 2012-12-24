@@ -7,6 +7,7 @@
 			<li><a href="#contactInfo" class='scroller'><i class="icon-chevron-right"></i>Contact</a></li>
 			<li><a href="#educationInfo" class='scroller'><i class="icon-chevron-right"></i>Education</a></li>
 			<li><a href="#experienceInfo" class='scroller'><i class="icon-chevron-right"></i>Experience</a></li>
+			<li ng-repeat="(type, exs) in experiences"><a href="#{{'{{type}}'}}" class='scroller exType'><i class="icon-leaf"></i>  {{'{{type}}'}}</a></li>
 			<li><button class="btn btn-primary saveResume" ng-click='saveResume()'>Save Resume</button></li>
 		</ul>
 	</div>
@@ -112,7 +113,7 @@
 				<legend class=""><h3>Experience</h3></legend>
 			</div>
 			<div id='experienceTypes' ng-repeat="(type, exs) in experiences">
-				<div class='experienceType'>
+				<div id="{{'{{type}}'}}" class='experienceType'>
 					<h4 class='typeName' ng-bind-template="{{'{{type}}'}}"></h4>
 					<a class="editExperienceType"><i class="icon-pencil"></i></a>
 					<a class="removeExperienceType" ng-click="removeExperienceType(type)"><i class="icon-trash"></i></a>

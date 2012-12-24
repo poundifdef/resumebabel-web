@@ -4,22 +4,34 @@ function loadResume(resumeId){
 }
 
 var offset = 54;
-$('.scroller').click(function(event) {
-    window.location.hash = $(this).attr('href');
-    event.preventDefault();
-    $($(this).attr('href'))[0].scrollIntoView();
-    scrollBy(0, -offset);
-});
+
+$('.scroller').live('click',
+    function() {
+        window.location.hash = $(this).attr('href');
+        event.preventDefault();
+        $($(this).attr('href'))[0].scrollIntoView();
+        scrollBy(0, -offset);
+    }
+);
+
+// function refreshScrollspy(){
+//     $('.scroller').click(function(event) {
+//         window.location.hash = $(this).attr('href');
+//         event.preventDefault();
+//         $($(this).attr('href'))[0].scrollIntoView();
+//         scrollBy(0, -offset);
+//     });
+// }
+
 
 function ResumeCtrl($scope, $http) {
-
-
     $http.get('/resumes/' + RESUMEIDNUM + '/resume.json').success(function(data) {
         $scope.resume = data;
         $scope.objective = $scope.resume.objective;
         $scope.contact = $scope.resume.contact;
         $scope.education = $scope.resume.education;
         $scope.experiences = $scope.resume.experiences;
+        //refreshScrollspy();
     });
 
     $scope.addEducation = function() {
@@ -59,6 +71,9 @@ function ResumeCtrl($scope, $http) {
                 $scope.experiences[String(result)] = [];
                 $scope.$apply();                 
                 $scope.saveResume();
+                $('[data-spy="scroll"]').each(function () {
+                    var $spy = $(this).scrollspy('refresh')
+                });
             }        
         });
     };
